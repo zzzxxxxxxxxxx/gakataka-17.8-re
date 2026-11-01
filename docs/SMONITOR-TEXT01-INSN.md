@@ -239,3 +239,11 @@ text1 的 150 个 rizin 函数也批量 pdg 出 141 个（analysis/SMONITOR-TEXT
 - 清单更新为 analysis/SMONITOR-TEXT01-INSN-FULL.txt（47903 行），中间结果 analysis/tmp/text01_union_v4.json。
 
 说明：反向可达只接受“能汇入已知代码”的起点，可显著减少纯数据误判；但 text1 新增部分仍不可靠。
+## 严格可达过滤与 text0 85.16%（第 11 轮补充）
+
+把弱编码候选（b24 等）也纳入，但要求“前向解码 24 条内必须汇入已知指令或直接转移到已知代码”：
+
+- 原始候选 6207 个，接受 1019 个；其中 text0 只有 69 个，text1 950 个（text1 基本是数据误判）；
+- 只采纳 text0 的 69 个入口，使 text0 从 82.99% 提升到 **85.16%**；
+- text1 保持 23.29%，不采纳其新增（避免把随机数据写成指令）；
+- 最终 48484 条指令，清单 analysis/SMONITOR-TEXT01-INSN-FULL.txt（48487 行），中间结果 analysis/tmp/text01_union_v5.json。
