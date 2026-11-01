@@ -1,0 +1,11 @@
+*.exe
+*.dll
+*.bin
+*.img
+*.raw
+vm/
+analysis/tmp/
+__pycache__/
+*.pyc
+*.zip
+*.7z
