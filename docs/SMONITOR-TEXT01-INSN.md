@@ -228,3 +228,14 @@ text1 的 150 个 rizin 函数也批量 pdg 出 141 个（analysis/SMONITOR-TEXT
 - 清单已更新：analysis/SMONITOR-TEXT01-INSN-FULL.txt（45764 行）。
 
 产物：analysis/tmp/text01_enc_scan.py、analysis/tmp/text01_union_v3.py、analysis/tmp/text01_union_v3.json。
+## 反向可达入口发现（第 10 轮补充）
+
+在未覆盖缺口（19346 字节）里从每个偏移向前解码（最多 24 条指令，只看 fallthrough 与直接转移），
+若解码流汇入已知指令地址，或遇到直接 call/jmp 目标落在已知指令集合内，就接受该偏移为入口：
+
+- 接受入口 1974 个；
+- 在“CODE 引用 + 已知 handler + rizin 函数”基础上，text0 从 66.26% 提升到 72.87%；
+- 与上一轮 v3 并集合并后：指令 47900 条，**text0 字节覆盖 82.99%**，text1 23.29%；
+- 清单更新为 analysis/SMONITOR-TEXT01-INSN-FULL.txt（47903 行），中间结果 analysis/tmp/text01_union_v4.json。
+
+说明：反向可达只接受“能汇入已知代码”的起点，可显著减少纯数据误判；但 text1 新增部分仍不可靠。

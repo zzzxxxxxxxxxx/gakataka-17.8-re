@@ -1,18 +1,37 @@
-# Smonitor .text0/.text1 指令清单（可信入口：CODE 引用 + 已知 handler + 过滤后的指针候选 + rizin 函数）
+# Smonitor .text0/.text1 指令清单 v4（CODE 引用 + 指针候选 + rizin + 反向可达）
 
-image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数 45761; text0 79.12%; text1 23.29%
+image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数 47900; text0 82.99%; text1 23.29%
 
 0x0046e000  lea      ecx, [edx + 0x53ce92a8]
+0x0046e001  mov      ch, byte ptr [eax - 0x2cac316e]
+0x0046e002  test     al, 0x92
+0x0046e003  xchg     edx, eax
+0x0046e004  into     
+0x0046e005  push     ebx
 0x0046e006  rcl      ecx, cl
+0x0046e007  shl      dword ptr [esi + 0xf], 1
 0x0046e008  bt       di, bp
+0x0046e009  bt       edi, ebp
+0x0046e00a  mov      dword ptr [0x558bef], eax
+0x0046e00b  out      dx, eax
 0x0046e00c  mov      edx, dword ptr [ebp]
+0x0046e00d  push     ebp
+0x0046e00e  add      byte ptr [edi], cl
 0x0046e00f  shrd     ecx, edi, 0xd
+0x0046e010  lodsb    al, byte ptr [esi]
+0x0046e011  stc      
+0x0046e012  or       eax, 0xc583d911
 0x0046e013  adc      ecx, ebx
+0x0046e014  fld      dword ptr [ebx - 0x16f6fb3b]
 0x0046e015  add      ebp, 4
+0x0046e016  lds      eax, ptr [ecx + ecx]
+0x0046e017  add      al, 9
 0x0046e018  or       ecx, ebp
+0x0046e019  jmp      0xc078d913
 0x0046e01a  cmc      
 0x0046e01b  clc      
 0x0046e01c  xor      eax, eax
+0x0046e01d  sal      dh, 0xd9
 0x0046e01e  neg      cl
 0x0046e020  bsf      cx, di
 0x0046e024  mov      ecx, edx
@@ -30,9 +49,45 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e03e  and      ecx, 0xf0000000
 0x0046e044  push     ebp
 0x0046e045  jmp      0x46ed0e
+0x0046e04a  mov      byte ptr [esp + 4], 0xda
+0x0046e04b  inc      esp
+0x0046e04c  and      al, 4
+0x0046e04d  add      al, 0xda
+0x0046e04e  fisub    dword ptr [esi - 9]
+0x0046e04f  div      cx
+0x0046e050  div      ecx
+0x0046e051  int1     
+0x0046e052  pushfd   
+0x0046e053  mov      word ptr [ebp + 4], dx
+0x0046e054  mov      dword ptr [ebp + 4], edx
+0x0046e055  push     ebp
+0x0046e056  add      al, 0x9c
+0x0046e057  pushfd   
+0x0046e058  mov      byte ptr [esp + 4], 0x7d
+0x0046e059  inc      esp
+0x0046e05a  and      al, 4
+0x0046e05b  add      al, 0x7d
+0x0046e05c  jge      0x46dffa
+0x0046e05d  pushfd   
+0x0046e05e  push     dword ptr [esp + 4]
+0x0046e05f  je       0x46e085
+0x0046e060  and      al, 4
+0x0046e061  add      al, 0x66
+0x0046e062  mov      word ptr [ebp + 6], ax
+0x0046e063  mov      dword ptr [ebp + 6], eax
+0x0046e064  inc      ebp
+0x0046e065  push     es
+0x0046e066  push     eax
+0x0046e067  jmp      0x46fd3b
+0x0046e068  iretd    
+0x0046e069  sbb      al, 0
+0x0046e06a  add      byte ptr [eax], al
+0x0046e06b  add      byte ptr [edi + ecx*4 - 0x79f0dbfc], bl
 0x0046e06c  pushfd   
 0x0046e06d  pop      dword ptr [esp]
 0x0046e070  jbe      0x46f6b0
+0x0046e072  cmp      dl, byte ptr [esi]
+0x0046e074  add      byte ptr [eax], al
 0x0046e076  mov      di, 0xfb69
 0x0046e07a  pushal   
 0x0046e07b  mov      dword ptr [esp + 0x1c], esi
@@ -76,7 +131,18 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e0e7  jmp      0x46f960
 0x0046e0ec  pushfd   
 0x0046e0ed  mov      eax, dword ptr [ebp]
+0x0046e0f0  mov      byte ptr [esp], 0xb5
+0x0046e0f1  add      al, 0x24
+0x0046e0f2  and      al, 0xb5
+0x0046e0f3  mov      ch, 0xe8
+0x0046e0f4  call     0x46e645
+0x0046e0f5  dec      esp
+0x0046e0f6  add      eax, 0x34ff0000
+0x0046e0f7  add      byte ptr [eax], al
+0x0046e0f8  add      bh, bh
 0x0046e0f9  push     dword ptr [esp]
+0x0046e0fa  xor      al, 0x24
+0x0046e0fb  and      al, 0x9c
 0x0046e0fc  pushfd   
 0x0046e0fd  mov      dword ptr [edi + eax], edx
 0x0046e100  pushfd   
@@ -284,7 +350,24 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e387  mov      word ptr [ebp], ax
 0x0046e38b  push     dword ptr [esp + 0x14]
 0x0046e38f  jmp      0x46e10a
+0x0046e394  add      al, 0x3c
+0x0046e395  cmp      al, 0x27
+0x0046e396  daa      
+0x0046e397  mov      dx, word ptr [ebp]
+0x0046e398  mov      edx, dword ptr [ebp]
+0x0046e399  push     ebp
+0x0046e39a  add      byte ptr [esi - 0x2d], ah
+0x0046e39b  sar      ax, cl
+0x0046e39c  sar      eax, cl
+0x0046e39d  clc      
+0x0046e39e  jmp      0x46f069
+0x0046e3a0  or       al, 0
+0x0046e3a1  add      byte ptr [eax], al
+0x0046e3a2  add      cl, ch
 0x0046e3a3  jmp      0x46f240
+0x0046e3a4  cwde     
+0x0046e3a5  push     cs
+0x0046e3a6  add      byte ptr [eax], al
 0x0046e3a8  pushal   
 0x0046e3a9  pushfd   
 0x0046e3aa  pop      dword ptr [esp + 0x2c]
@@ -300,6 +383,22 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e3d0  mov      byte ptr [esp + 0xc], dh
 0x0046e3d4  mov      dword ptr [esp + 0x38], edx
 0x0046e3d8  pushfd   
+0x0046e3d9  lea      esp, [esp + 0x3c]
+0x0046e3da  and      al, 0x3c
+0x0046e3db  and      al, 0x3c
+0x0046e3dc  cmp      al, 0xe9
+0x0046e3dd  jmp      0x46f39f
+0x0046e3de  mov      ebp, 0x8900000f
+0x0046e3df  sldt     word ptr [eax]
+0x0046e3e0  add      byte ptr [eax], al
+0x0046e3e1  add      byte ptr [ecx - 0x639ffbbb], cl
+0x0046e3e2  mov      dword ptr [ebp + 4], eax
+0x0046e3e3  inc      ebp
+0x0046e3e4  add      al, 0x60
+0x0046e3e5  pushal   
+0x0046e3e6  pushfd   
+0x0046e3e7  jmp      0x46f69a
+0x0046e3ea  add      byte ptr [eax], al
 0x0046e3ec  sub      ebp, 4
 0x0046e3ef  mov      byte ptr [esp + 0xc], 0xca
 0x0046e3f4  push     esi
@@ -308,18 +407,87 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e3f9  lea      esp, [esp + 0x2c]
 0x0046e3fd  jmp      0x46fa90
 0x0046e402  jmp      0x46f52c
+0x0046e407  sub      al, 0x2f
+0x0046e408  das      
+0x0046e409  rcr      al, cl
+0x0046e40a  fcom     st(2)
+0x0046e40b  rcl      al, cl
+0x0046e40c  ror      byte ptr [edx + 0x3966ff46], 1
+0x0046e40d  mov      al, byte ptr [esi - 1]
+0x0046e410  cmp      bx, dx
+0x0046e411  cmp      ebx, edx
+0x0046e412  shl      dword ptr [eax + 0x30], cl
+0x0046e413  pushal   
+0x0046e414  xor      al, bl
+0x0046e415  fcomp    dword ptr [esi + eax*8 + 0x1e142444]
+0x0046e416  pushfd   
+0x0046e417  mov      byte ptr [esp + 0x14], 0x1e
+0x0046e418  inc      esp
+0x0046e419  and      al, 0x14
+0x0046e41a  adc      al, 0x1e
+0x0046e41b  push     ds
+0x0046e41c  jmp      0x46f999
+0x0046e41d  js       0x46e434
+0x0046e41e  adc      eax, 0x74ff0000
+0x0046e41f  add      byte ptr [eax], al
+0x0046e420  add      bh, bh
 0x0046e421  push     dword ptr [esp + 0x40]
+0x0046e422  je       0x46e448
+0x0046e423  and      al, 0x40
+0x0046e424  inc      eax
 0x0046e425  pop      dword ptr [ebp]
 0x0046e428  pushfd   
 0x0046e429  pushfd   
 0x0046e42a  mov      byte ptr [esp], 0x59
 0x0046e42e  lea      esp, [esp + 0x4c]
 0x0046e432  jmp      0x46fa90
+0x0046e434  push     ss
+0x0046e435  add      byte ptr [eax], al
 0x0046e437  pushfd   
 0x0046e438  mov      al, byte ptr ss:[edx]
 0x0046e43b  pushfd   
 0x0046e43c  jmp      0x46f056
+0x0046e441  aad      0x5c
+0x0046e442  pop      esp
+0x0046e443  add      al, ch
+0x0046e444  call     0xfe8d6faf
+0x0046e445  mov      ax, word ptr [esi - 2]
+0x0046e446  mov      eax, dword ptr [esi - 2]
+0x0046e449  cmp      cl, ch
+0x0046e44b  push     esi
+0x0046e44c  cmc      
+0x0046e44d  test     cl, bh
+0x0046e44e  stc      
+0x0046e44f  xchg     al, ah
+0x0046e450  loopne   0x46e44a
+0x0046e451  clc      
+0x0046e452  pushfd   
+0x0046e453  add      ax, bx
+0x0046e454  add      eax, ebx
+0x0046e455  fsubr    st(0)
+0x0046e456  call     0x46f458
+0x0046e457  std      
+0x0046e458  sldt     word ptr [eax]
+0x0046e459  add      byte ptr [eax], al
+0x0046e45a  add      bl, dl
+0x0046e45b  rcl      edx, cl
+0x0046e45c  shl      byte ptr [esi + 0x11], cl
+0x0046e45d  adc      dx, di
+0x0046e45e  adc      edx, edi
+0x0046e45f  cli      
+0x0046e460  rdtsc    
+0x0046e461  xor      dword ptr [ebx - 0x179fffbb], ecx
+0x0046e462  mov      eax, dword ptr [ebp]
+0x0046e463  inc      ebp
+0x0046e464  add      byte ptr [eax - 0x18], ah
+0x0046e465  pushal   
+0x0046e466  call     0x46ee6a
+0x0046e467  dec      dword ptr [ecx]
+0x0046e468  or       dword ptr [eax], eax
+0x0046e469  add      byte ptr [eax], al
+0x0046e46a  add      byte ptr [ecx], al
 0x0046e46b  add      ebx, eax
+0x0046e46c  ret      
 0x0046e46d  clc      
 0x0046e46e  jmp      0x46eeef
 0x0046e473  aad      0xe5
@@ -332,7 +500,15 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e47f  mov      dx, word ptr [ebp + 4]
 0x0046e483  clc      
 0x0046e484  test     al, al
+0x0046e486  cmp      di, si
+0x0046e487  cmp      edi, esi
+0x0046e488  test     dword ptr [ebx - 0x6217f93b], 0x66fffffd
+0x0046e489  add      ebp, 6
+0x0046e48a  lds      eax, ptr [esi]
+0x0046e48b  push     es
+0x0046e48c  call     0x46e22e
 0x0046e491  bt       si, 5
+0x0046e492  bt       esi, 5
 0x0046e496  sub      ebp, 2
 0x0046e499  mov      word ptr [esp + 4], 0xddb8
 0x0046e4a0  jmp      0x46e04a
@@ -350,16 +526,92 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e4ca  not      al
 0x0046e4cc  mov      byte ptr [esp + 4], 0xc7
 0x0046e4d1  mov      dword ptr [esp], ebp
+0x0046e4d4  not      dl
+0x0046e4d5  shl      byte ptr [eax - 0x64], cl
+0x0046e4d6  pushal   
+0x0046e4d7  pushfd   
+0x0046e4d8  push     edx
+0x0046e4d9  pushfd   
+0x0046e4da  sub      ebp, 2
+0x0046e4db  in       eax, dx
+0x0046e4dc  add      ch, cl
+0x0046e4dd  jmp      0x46f4c3
+0x0046e4de  loope    0x46e4ef
+0x0046e4df  sldt     word ptr [eax]
+0x0046e4e0  add      byte ptr [eax], al
+0x0046e4e1  add      byte ptr [ecx + 0x2de90445], cl
 0x0046e4e2  mov      dword ptr [ebp + 4], eax
 0x0046e4e5  jmp      0x46f217
+0x0046e4e7  or       eax, 0x55890000
+0x0046e4ea  mov      dword ptr [ebp], edx
+0x0046e4eb  push     ebp
+0x0046e4ec  add      byte ptr [eax - 0x3f], ch
+0x0046e4ed  push     0x3985e4c1
+0x0046e4ee  shl      esp, 0x85
+0x0046e4ef  in       al, 0x85
+0x0046e4f0  test     dword ptr [ecx], edi
+0x0046e4f1  cmp      esi, eax
+0x0046e4f2  mov      byte ptr [esp + 4], 0xf9
+0x0046e4f3  inc      esp
+0x0046e4f4  and      al, 4
+0x0046e4f5  add      al, 0xf9
+0x0046e4f6  stc      
+0x0046e4f7  call     0x46f50d
+0x0046e4f8  adc      dword ptr [eax], edx
+0x0046e4f9  adc      byte ptr [eax], al
+0x0046e4fa  add      byte ptr [eax], al
+0x0046e4fb  add      byte ptr [esi - 0x77], ah
+0x0046e4fc  mov      word ptr [eax], dx
+0x0046e4fd  mov      dword ptr [eax], edx
+0x0046e4fe  adc      byte ptr [ebp + ecx*4 - 0x16f3db9c], bl
+0x0046e4ff  pushfd   
+0x0046e500  lea      esp, [esp + 0xc]
+0x0046e501  and      al, 0xc
+0x0046e502  and      al, 0xc
+0x0046e503  or       al, 0xe9
+0x0046e504  jmp      0x46f960
+0x0046e505  push     edi
+0x0046e506  adc      al, 0
+0x0046e507  add      byte ptr [eax], al
+0x0046e508  add      byte ptr [ecx + 0x4c60445], cl
+0x0046e509  mov      dword ptr [ebp + 4], eax
+0x0046e50a  inc      ebp
+0x0046e50b  add      al, 0xc6
+0x0046e50c  mov      byte ptr [esp], 0x38
+0x0046e50d  add      al, 0x24
+0x0046e50e  and      al, 0x38
+0x0046e50f  cmp      byte ptr [esp + ebx*4 + 0x4824448f], bl
+0x0046e510  pushfd   
+0x0046e511  pushfd   
+0x0046e512  pop      dword ptr [esp + 0x48]
+0x0046e513  inc      esp
+0x0046e514  and      al, 0x48
+0x0046e515  dec      eax
+0x0046e516  push     0x2199a99c
+0x0046e517  pushfd   
+0x0046e518  test     eax, 0x34ff2199
+0x0046e519  cdq      
+0x0046e51a  and      edi, edi
+0x0046e51b  push     dword ptr [esp]
+0x0046e51c  xor      al, 0x24
+0x0046e51d  and      al, 0xe9
+0x0046e51e  jmp      0x46f898
+0x0046e51f  jne      0x46e534
+0x0046e520  adc      eax, dword ptr [eax]
+0x0046e521  add      byte ptr [eax], al
+0x0046e522  add      byte ptr [eax + 0x45892424], cl
 0x0046e523  mov      byte ptr [esp], ah
 0x0046e526  mov      dword ptr [ebp], eax
+0x0046e528  add      byte ptr [esp + ebx*4 + 0x4247c88], bl
 0x0046e529  pushfd   
 0x0046e52a  pushfd   
 0x0046e52b  mov      byte ptr [esp + 4], bh
 0x0046e52f  lea      esp, [esp + 0x38]
 0x0046e533  jmp      0x46fa90
+0x0046e534  pop      eax
+0x0046e535  adc      eax, 0x74ff0000
 0x0046e538  push     dword ptr [esp + 0x5c]
+0x0046e53a  and      al, 0x5c
 0x0046e53c  pop      dword ptr [ebp]
 0x0046e53f  mov      dword ptr [esp + 4], 0x3b5927da
 0x0046e547  lea      esp, [esp + 0x60]
@@ -420,8 +672,30 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e5e8  cld      
 0x0046e5e9  cld      
 0x0046e5ea  jmp      0x46f0d8
+0x0046e5ef  add      dx, cx
+0x0046e5f0  add      edx, ecx
+0x0046e5f2  and      al, 0x3c
+0x0046e5f3  loopne   0x46e631
+0x0046e5f4  cmp      al, 0x50
+0x0046e5f5  push     eax
+0x0046e5f6  movsx    dx, dl
+0x0046e5f7  movsx    edx, dl
+0x0046e5f8  mov      esi, 0x558bd2
+0x0046e5f9  ror      byte ptr [ebx + 0x39660055], cl
+0x0046e5fa  mov      edx, dword ptr [ebp]
+0x0046e5fb  push     ebp
+0x0046e5fc  add      byte ptr [esi + 0x39], ah
+0x0046e5fd  cmp      ax, sp
+0x0046e5fe  cmp      eax, esp
+0x0046e5ff  loopne   0x46e657
+0x0046e600  push     esi
+0x0046e601  cmp      dl, dl
+0x0046e603  call     0x46e291
+0x0046e607  push     esi
 0x0046e608  not      al
+0x0046e609  ror      byte ptr [edi], 1
 0x0046e60a  movzx    ecx, dl
+0x0046e60b  mov      dh, 0xca
 0x0046e60d  bsr      cx, dx
 0x0046e611  dec      al
 0x0046e613  test     ah, 6
@@ -484,11 +758,64 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e6c0  lea      esp, [esp + 0x24]
 0x0046e6c4  jg       0x46e6e1
 0x0046e6ca  push     0xb6eee377
+0x0046e6cf  mov      word ptr [ebp], ax
+0x0046e6d0  mov      dword ptr [ebp], eax
+0x0046e6d1  inc      ebp
+0x0046e6d2  add      byte ptr [ecx - 0x63addbf4], cl
+0x0046e6d3  mov      dword ptr [esp], ecx
+0x0046e6d4  or       al, 0x24
+0x0046e6d5  and      al, 0x52
+0x0046e6d6  push     edx
+0x0046e6d7  pushfd   
+0x0046e6d8  lea      esp, [esp + 0xc]
+0x0046e6d9  and      al, 0xc
+0x0046e6da  and      al, 0xc
+0x0046e6db  or       al, 0xe9
+0x0046e6dc  jmp      0x46fa90
+0x0046e6dd  scasd    eax, dword ptr es:[edi]
+0x0046e6de  adc      eax, dword ptr [eax]
+0x0046e6df  add      byte ptr [eax], al
+0x0046e6e0  add      byte ptr [eax + 0x66], ah
+0x0046e6e1  pushal   
+0x0046e6e2  mov      word ptr [ebp], ax
+0x0046e6e3  mov      dword ptr [ebp], eax
+0x0046e6e4  inc      ebp
+0x0046e6e5  add      byte ptr [ebp - 0x73], dl
+0x0046e6e6  push     ebp
+0x0046e6e7  lea      esp, [esp + 0x24]
+0x0046e6e8  and      al, 0x24
+0x0046e6e9  and      al, 0x24
+0x0046e6ea  and      al, 0xe9
+0x0046e6eb  jmp      0x46fa90
+0x0046e6ec  mov      al, byte ptr [0x66000013]
+0x0046e6ed  adc      eax, dword ptr [eax]
+0x0046e6ee  add      byte ptr [eax], al
+0x0046e6ef  add      byte ptr [esi - 0x77], ah
 0x0046e6f0  mov      word ptr [ebp + 6], ax
+0x0046e6f1  mov      dword ptr [ebp + 6], eax
+0x0046e6f2  inc      ebp
+0x0046e6f3  push     es
 0x0046e6f4  jmp      0x46e275
 0x0046e6f9  jmp      0x458e27
 0x0046e6fe  rcr      ah, 3
 0x0046e701  or       eax, ecx
+0x0046e703  rol      eax, 0xe
+0x0046e704  ror      byte ptr [esi], 0x8b
+0x0046e705  push     cs
+0x0046e706  mov      eax, dword ptr [ebp]
+0x0046e707  inc      ebp
+0x0046e708  add      dl, dl
+0x0046e709  sal      dl, cl
+0x0046e70a  mov      dl, byte ptr [ebp + 4]
+0x0046e70b  mov      dl, byte ptr [ebp + 4]
+0x0046e70c  push     ebp
+0x0046e70d  add      al, 0x9c
+0x0046e70e  pushfd   
+0x0046e70f  call     0x46fb71
+0x0046e710  pop      ebp
+0x0046e711  adc      al, 0
+0x0046e712  add      byte ptr [eax], al
+0x0046e713  add      byte ptr [ebp - 0x72f0809], al
 0x0046e714  test     edi, esi
 0x0046e716  not      eax
 0x0046e718  clc      
@@ -527,6 +854,101 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046e768  rol      al, cl
 0x0046e76a  xchg     cl, al
 0x0046e76c  mov      al, byte ptr [ebp]
+0x0046e76f  neg      cl
+0x0046e770  fprem    
+0x0046e771  clc      
+0x0046e772  clc      
+0x0046e773  mov      cl, byte ptr [ebp + 2]
+0x0046e774  dec      ebp
+0x0046e775  add      ch, byte ptr [eax + 6]
+0x0046e776  push     0xfd982e06
+0x0046e777  push     es
+0x0046e778  cwde     
+0x0046e779  cwde     
+0x0046e77a  std      
+0x0046e77b  sub      ebp, 2
+0x0046e77c  in       eax, dx
+0x0046e77d  add      ah, byte ptr [eax - 0x2e]
+0x0046e77e  pushal   
+0x0046e77f  shl      al, cl
+0x0046e780  loopne   0x46e70f
+0x0046e781  lea      esp, [esp + 0x24]
+0x0046e782  and      al, 0x24
+0x0046e783  and      al, 0x24
+0x0046e784  and      al, 0xf
+0x0046e785  jo       0x46f8bb
+0x0046e786  xor      byte ptr [eax], 0x11
+0x0046e787  xor      byte ptr [ecx], dl
+0x0046e788  adc      dword ptr [eax], eax
+0x0046e789  add      byte ptr [eax], al
+0x0046e78a  add      byte ptr [esi - 0x77], ah
+0x0046e78b  mov      word ptr [ebp + 4], ax
+0x0046e78c  mov      dword ptr [ebp + 4], eax
+0x0046e78d  inc      ebp
+0x0046e78e  add      al, 0x9c
+0x0046e78f  pushfd   
+0x0046e790  push     dword ptr [esp]
+0x0046e791  xor      al, 0x24
+0x0046e792  and      al, 0x88
+0x0046e793  mov      byte ptr [esp], ch
+0x0046e794  sub      al, 0x24
+0x0046e795  and      al, 0x60
+0x0046e796  pushal   
+0x0046e797  pushfd   
+0x0046e798  pop      dword ptr [esp + 0x24]
+0x0046e799  inc      esp
+0x0046e79a  and      al, 0x24
+0x0046e79b  and      al, 0xff
+0x0046e79c  push     dword ptr [esp]
+0x0046e79d  xor      al, 0x24
+0x0046e79e  and      al, 0xff
+0x0046e79f  push     dword ptr [esp + 0x28]
+0x0046e7a0  je       0x46e7c6
+0x0046e7a1  and      al, 0x28
+0x0046e7a2  sub      byte ptr [edi + 0x44c60045], cl
+0x0046e7a3  pop      dword ptr [ebp]
+0x0046e7a4  inc      ebp
+0x0046e7a5  add      dh, al
+0x0046e7a6  mov      byte ptr [esp + 4], 0x90
+0x0046e7a7  inc      esp
+0x0046e7a8  and      al, 4
+0x0046e7a9  add      al, 0x90
+0x0046e7aa  nop      
+0x0046e7ab  push     dword ptr [esp + 4]
+0x0046e7ac  je       0x46e7d2
+0x0046e7ad  and      al, 4
+0x0046e7ae  add      al, 0x8d
+0x0046e7af  lea      esp, [esp + 0x30]
+0x0046e7b0  and      al, 0x30
+0x0046e7b1  and      al, 0x30
+0x0046e7b2  xor      cl, ch
+0x0046e7b3  jmp      0x46fa90
+0x0046e7b4  fcom     dword ptr [edx]
+0x0046e7b5  adc      al, byte ptr [eax]
+0x0046e7b6  add      byte ptr [eax], al
+0x0046e7b7  add      byte ptr [ecx], bh
+0x0046e7b8  cmp      esp, ebp
+0x0046e7b9  in       al, dx
+0x0046e7ba  mov      eax, dword ptr [ebp]
+0x0046e7bb  inc      ebp
+0x0046e7bc  add      byte ptr [edi], cl
+0x0046e7bd  sete     cl
+0x0046e7be  xchg     esp, eax
+0x0046e7bf  rcl      edx, 0xd1
+0x0046e7c0  rcl      cl, cl
+0x0046e7c2  rcr      cl, cl
+0x0046e7c4  mov      cl, byte ptr [ebp + 4]
+0x0046e7c5  dec      ebp
+0x0046e7c6  add      al, 0x9c
+0x0046e7c7  pushfd   
+0x0046e7c8  pushal   
+0x0046e7c9  sub      ebp, 2
+0x0046e7ca  in       eax, dx
+0x0046e7cb  add      bh, cl
+0x0046e7cc  stc      
+0x0046e7cd  cmp      al, bl
+0x0046e7cf  bt       ebx, esp
+0x0046e7d2  jmp      0x46e0bd
 0x0046e7d7  pop      es
 0x0046e7d8  sub      ebx, dword ptr [edx + 9]
 0x0046e7db  pop      es
@@ -670,6 +1092,63 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046eb92  or       dword ptr [edi], eax
 0x0046eb94  pop      ss
 0x0046eb95  retf     0x706
+0x0046ebaa  push     es
+0x0046ebab  or       al, byte ptr [edx + edi + 6]
+0x0046ebac  inc      esp
+0x0046ebad  cmp      al, byte ptr [esi]
+0x0046ebae  push     es
+0x0046ebaf  add      al, 0xd5
+0x0046ebb0  aad      0xa
+0x0046ebb1  or       al, byte ptr [esi]
+0x0046ebb2  push     es
+0x0046ebb3  or       al, byte ptr [ebx]
+0x0046ebb4  add      ebp, edx
+0x0046ebb5  ljmp     0x506:0xda0f0706
+0x0046ebb6  push     es
+0x0046ebb7  pop      es
+0x0046ebb8  pminub   mm0, qword ptr [esi]
+0x0046ebb9  fiadd    dword ptr [esi]
+0x0046ebba  push     es
+0x0046ebbb  add      eax, 0x406faf4
+0x0046ebbc  hlt      
+0x0046ebbd  cli      
+0x0046ebbe  push     es
+0x0046ebbf  add      al, 0xf5
+0x0046ebc0  cmc      
+0x0046ebc1  push     9
+0x0046ebc2  or       dword ptr [esi*8 - 0x6efbf696], eax
+0x0046ebc3  add      al, 0xf5
+0x0046ebc4  cmc      
+0x0046ebc5  push     9
+0x0046ebc6  or       dword ptr [ecx + edx*4], eax
+0x0046ebc7  add      al, 0x91
+0x0046ebc8  xchg     ecx, eax
+0x0046ebc9  ljmp     0x509:0x4abf0506
+0x0046ebca  push     es
+0x0046ebcb  add      eax, 0x5094abf
+0x0046ebcc  mov      edi, 0xf205094a
+0x0046ebd0  sbb      al, byte ptr [esi]
+0x0046ebd1  sbb      al, byte ptr [esi]
+0x0046ebd2  push     es
+0x0046ebd3  add      al, 0xa9
+0x0046ebd5  fild     dword ptr [esi]
+0x0046ebd6  push     es
+0x0046ebd7  jns      0x46fea4
+0x0046ebd8  mov      edi, eax
+0x0046ebda  adc      al, byte ptr [eax]
+0x0046ebdb  add      byte ptr [eax], al
+0x0046ebdc  add      byte ptr [eax - 0x3a], ah
+0x0046ebdd  pushal   
+0x0046ebde  mov      byte ptr [esp], 4
+0x0046ebdf  add      al, 0x24
+0x0046ebe0  and      al, 4
+0x0046ebe1  add      al, 0x89
+0x0046ebe2  mov      dword ptr [esp + 0x1c], eax
+0x0046ebe3  inc      esp
+0x0046ebe4  and      al, 0x1c
+0x0046ebe5  sbb      al, 0x60
+0x0046ebe6  pushal   
+0x0046ebe7  jmp      0x46e3d0
 0x0046ebec  bt       bp, 6
 0x0046ebf1  test     bh, cl
 0x0046ebf3  stc      
@@ -716,9 +1195,14 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046ec6d  pushfd   
 0x0046ec6e  lea      esp, [esp + 0x34]
 0x0046ec72  jmp      0x46fa90
+0x0046ec77  shld     eax, edx, cl
+0x0046ec7a  jmp      0x46e3e2
+0x0046ec7c  idiv     edi
+0x0046ec7e  dec      dword ptr [ecx + 0x669c2404]
 0x0046ec7f  mov      dword ptr [esp], eax
 0x0046ec82  pushfd   
 0x0046ec83  mov      word ptr [esp], ax
+0x0046ec84  mov      dword ptr [esp], eax
 0x0046ec87  mov      dword ptr [esp], edx
 0x0046ec8a  pushfd   
 0x0046ec8b  pushfd   
@@ -757,21 +1241,86 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046eced  cmc      
 0x0046ecee  pushal   
 0x0046ecef  add      ebp, 2
+0x0046ecf2  cmc      
+0x0046ecf3  shrd     eax, edx, cl
+0x0046ecf4  lodsd    eax, dword ptr [esi]
+0x0046ecf5  shl      byte ptr [eax - 0x77], 1
+0x0046ecf6  pushal   
+0x0046ecf7  mov      dword ptr [ebp + 4], eax
+0x0046ecf8  inc      ebp
+0x0046ecf9  add      al, 0x53
+0x0046ecfa  push     ebx
+0x0046ecfb  mov      byte ptr [esp], 0x44
+0x0046ecfc  add      al, 0x24
+0x0046ecfd  and      al, 0x44
+0x0046ecfe  inc      esp
+0x0046ecff  jmp      0x46ecbe
+0x0046ed00  mov      edx, 0xe9ffffff
 0x0046ed04  jmp      0x46f3f0
+0x0046ed05  out      6, eax
+0x0046ed07  add      byte ptr [eax], al
 0x0046ed09  jmp      0x46f741
+0x0046ed0a  xor      ecx, dword ptr [edx]
+0x0046ed0b  or       al, byte ptr [eax]
+0x0046ed0c  add      byte ptr [eax], al
+0x0046ed0d  add      cl, ch
 0x0046ed0e  jmp      0x46ee86
+0x0046ed0f  jae      0x46ed12
+0x0046ed11  add      byte ptr [eax], al
+0x0046ed12  add      byte ptr [ecx - 0x9fdbfc], cl
 0x0046ed13  mov      dword ptr [esp], eax
 0x0046ed16  pushal   
 0x0046ed17  push     dword ptr [esp + 4]
+0x0046ed18  je       0x46ed3e
+0x0046ed1a  add      al, 0x89
 0x0046ed1b  mov      dword ptr [esp + 0x20], edx
+0x0046ed1c  push     esp
+0x0046ed1d  and      al, 0x20
 0x0046ed1f  push     0x226ec48e
 0x0046ed24  mov      dword ptr [esp], ebp
 0x0046ed27  push     ebp
 0x0046ed28  push     0x54ff2c56
 0x0046ed2d  lea      esp, [esp + 0x2c]
 0x0046ed31  jmp      0x46f39f
+0x0046ed36  pushfd   
+0x0046ed37  jmp      0x46eedf
+0x0046ed38  mov      dword ptr [0x53000001], eax
+0x0046ed39  add      dword ptr [eax], eax
+0x0046ed3a  add      byte ptr [eax], al
+0x0046ed3b  add      byte ptr [ebx - 0x64], dl
+0x0046ed3c  push     ebx
+0x0046ed3d  pushfd   
+0x0046ed3e  pushal   
+0x0046ed3f  cmp      al, 0x50
+0x0046ed40  push     eax
+0x0046ed41  add      bx, ax
+0x0046ed42  add      ebx, eax
+0x0046ed44  mov      dword ptr [esp + 0x14], 0xb0762ab0
+0x0046ed45  inc      esp
+0x0046ed46  and      al, 0x14
+0x0046ed47  adc      al, 0xb0
+0x0046ed48  mov      al, 0x2a
+0x0046ed49  sub      dh, byte ptr [esi - 0x50]
+0x0046ed4a  jbe      0x46ecfc
+0x0046ed4b  mov      al, 0x66
+0x0046ed4c  test     sp, 0x3694
+0x0046ed4d  test     esp, 0xed833694
+0x0046ed4e  les      edx, ptr [esi + esi - 0x17fd127d]
+0x0046ed4f  xchg     esp, eax
+0x0046ed50  sub      ebp, 2
+0x0046ed51  sub      ebp, 2
+0x0046ed52  in       eax, dx
+0x0046ed53  add      ch, al
+0x0046ed54  call     0x458e69
+0x0046ed55  adc      byte ptr [ecx - 0x73160002], ah
+0x0046ed56  mov      eax, dword ptr [0x8ce9fffe]
 0x0046ed59  jmp      0x46e4ea
+0x0046ed5b  idiv     edi
+0x0046ed5d  inc      esi
 0x0046ed5e  mov      byte ptr [esp + 8], 5
+0x0046ed5f  inc      esp
+0x0046ed60  and      al, 8
+0x0046ed62  add      eax, 0x1c245489
 0x0046ed63  mov      dword ptr [esp + 0x1c], edx
 0x0046ed67  pushal   
 0x0046ed68  pushfd   
@@ -781,11 +1330,44 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046ed76  rcr      si, 1
 0x0046ed79  shl      esi, 0x1c
 0x0046ed7c  mov      esi, dword ptr [ebp]
+0x0046ed7f  cmp      dl, ch
+0x0046ed80  ljmp     0x8392:0xfe807aa8
+0x0046ed81  test     al, 0x7a
+0x0046ed82  jp       0x46ed04
+0x0046ed83  cmp      dh, 0x92
+0x0046ed85  xchg     edx, eax
+0x0046ed86  add      ebp, 4
+0x0046ed87  lds      eax, ptr [eax]
+0x0046ed88  add      al, 0x60
+0x0046ed89  pushal   
+0x0046ed8a  mov      word ptr [esp + 4], bp
+0x0046ed8b  mov      dword ptr [esp + 4], ebp
+0x0046ed8c  insb     byte ptr es:[edi], dx
+0x0046ed8d  and      al, 4
+0x0046ed8e  add      al, 0x9c
+0x0046ed8f  pushfd   
+0x0046ed90  lea      esp, [esp + 0x24]
+0x0046ed91  and      al, 0x24
+0x0046ed92  and      al, 0x24
+0x0046ed94  jmp      0x46f952
+0x0046eda1  rol      byte ptr [edx], 0xe9
+0x0046eda2  add      ch, cl
+0x0046eda4  scasb    al, byte ptr es:[edi]
+0x0046eda5  add      eax, 0x71e90000
+0x0046eda6  add      byte ptr [eax], al
+0x0046eda7  add      cl, ch
+0x0046eda8  jmp      0x46f41e
+0x0046eda9  jno      0x46edb1
+0x0046edaa  push     es
+0x0046edab  add      byte ptr [eax], al
+0x0046edac  add      byte ptr [edi + ecx*4 - 0x63e7dbbc], bl
 0x0046edad  pushfd   
 0x0046edae  pop      dword ptr [esp + 0x18]
+0x0046edb1  sbb      byte ptr [edi + ecx - 0x54f0386d], bl
 0x0046edb2  pushfd   
 0x0046edb3  setae    bh
 0x0046edb6  bts      ebp, ebp
+0x0046edb8  in       eax, dx
 0x0046edb9  mov      bh, dl
 0x0046edbb  xchg     dword ptr [esp + 0x18], esi
 0x0046edbf  lea      ebp, [edx - 0x3d9b0431]
@@ -866,7 +1448,17 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046eec4  movsx    bp, cl
 0x0046eec8  jmp      0x46edad
 0x0046eecd  mov      word ptr [esp + 8], 0x4476
+0x0046eece  mov      dword ptr [esp + 8], 0xb3e84476
+0x0046eecf  inc      esp
+0x0046eed0  and      al, 8
+0x0046eed1  or       byte ptr [esi + 0x44], dh
+0x0046eed2  jbe      0x46ef18
+0x0046eed3  inc      esp
 0x0046eed4  call     0x46ef8c
+0x0046eed5  mov      bl, 0
+0x0046eed6  add      byte ptr [eax], al
+0x0046eed7  add      byte ptr [eax], al
+0x0046eed8  add      byte ptr [eax + ebp*8 + 0xd4c], bl
 0x0046eed9  pushfd   
 0x0046eeda  call     0x46fc2b
 0x0046eedf  mov      dword ptr [esp], edx
@@ -900,27 +1492,65 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046ef35  add      dl, al
 0x0046ef37  not      al
 0x0046ef39  and      dl, 0
+0x0046ef3a  loop     0x46ef3c
 0x0046ef3c  setle    dl
 0x0046ef3f  btr      dx, 3
+0x0046ef40  btr      edx, 3
+0x0046ef41  mov      edx, 0x9d2c03f2
+0x0046ef42  add      ebp, dword ptr [ebx*4 - 0x2f41f09a]
+0x0046ef43  add      ebp, dword ptr [ebx*4 - 0x2f41f09a]
 0x0046ef44  sub      al, 0x9d
+0x0046ef45  popfd    
 0x0046ef46  movsx    dx, al
+0x0046ef47  movsx    edx, al
+0x0046ef48  mov      esi, 0xfad366d0
+0x0046ef49  shl      byte ptr [esi - 0x2d], 1
 0x0046ef4a  sar      dx, cl
+0x0046ef4b  sar      edx, cl
+0x0046ef4c  cli      
 0x0046ef4d  adc      dh, 0xb8
+0x0046ef4e  salc     
+0x0046ef4f  mov      eax, 0xf628c328
 0x0046ef50  sub      bl, al
 0x0046ef52  sub      dh, dh
+0x0046ef53  test     al, 0xfe
 0x0046ef54  sar      dh, 2
+0x0046ef55  inc      byte ptr [edx]
+0x0046ef56  add      bh, cl
 0x0046ef57  stc      
 0x0046ef58  not      dh
+0x0046ef59  salc     
 0x0046ef5a  mov      dx, word ptr [ebp]
+0x0046ef5b  mov      edx, dword ptr [ebp]
+0x0046ef5c  push     ebp
+0x0046ef5d  add      ch, dh
 0x0046ef5e  cmc      
 0x0046ef5f  add      ebp, 2
+0x0046ef60  lds      eax, ptr [edx]
+0x0046ef61  add      ah, byte ptr [esi - 0x77]
 0x0046ef62  mov      word ptr [esp + 0x10], bx
+0x0046ef63  mov      dword ptr [esp + 0x10], ebx
+0x0046ef64  pop      esp
+0x0046ef65  and      al, 0x10
+0x0046ef66  adc      byte ptr [eax + ecx*4 - 0x7699dbe4], bl
 0x0046ef67  pushfd   
 0x0046ef68  mov      byte ptr [esp], bl
+0x0046ef69  sbb      al, 0x24
+0x0046ef6a  and      al, 0x66
 0x0046ef6b  mov      word ptr [edi + eax], dx
+0x0046ef6c  mov      dword ptr [edi + eax], edx
+0x0046ef6d  adc      al, 7
+0x0046ef6e  pop      es
 0x0046ef6f  pushfd   
 0x0046ef70  lea      esp, [esp + 0x48]
+0x0046ef71  and      al, 0x48
+0x0046ef72  and      al, 0x48
+0x0046ef73  dec      eax
 0x0046ef74  jmp      0x46f960
+0x0046ef75  out      9, eax
+0x0046ef76  or       dword ptr [eax], eax
+0x0046ef77  add      byte ptr [eax], al
+0x0046ef78  add      cl, bh
 0x0046ef79  stc      
 0x0046ef7a  cmp      dh, 0x5f
 0x0046ef7d  sub      al, 0x9d
@@ -991,6 +1621,64 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f03a  mov      word ptr [esp], 0xae1f
 0x0046f040  lea      esp, [esp + 0x44]
 0x0046f044  jmp      0x46f39f
+0x0046f049  add      ebp, 4
+0x0046f04c  push     0x5dcba5f1
+0x0046f050  pop      ebp
+0x0046f051  call     0x46e0d4
+0x0046f052  jle      0x46f044
+0x0046f056  mov      word ptr [ebp], ax
+0x0046f057  mov      dword ptr [ebp], eax
+0x0046f058  inc      ebp
+0x0046f059  add      byte ptr [ebp + ecx*4 - 0x16ebdb9c], bl
+0x0046f05a  pushfd   
+0x0046f05b  lea      esp, [esp + 0x14]
+0x0046f05c  and      al, 0x14
+0x0046f05d  and      al, 0x14
+0x0046f05e  adc      al, 0xe9
+0x0046f05f  jmp      0x46f960
+0x0046f060  cld      
+0x0046f061  or       byte ptr [eax], al
+0x0046f062  add      byte ptr [eax], al
+0x0046f063  add      al, ch
+0x0046f064  call     0x46fa9d
+0x0046f065  xor      al, 0xa
+0x0046f066  or       al, byte ptr [eax]
+0x0046f067  add      byte ptr [eax], al
+0x0046f068  add      byte ptr [esi + 0xf], ah
+0x0046f069  shld     ax, cx, cl
+0x0046f06a  shld     eax, ecx, cl
+0x0046f06b  movsd    dword ptr es:[edi], dword ptr [esi]
+0x0046f06c  enter    0xf66, -0x43
+0x0046f06d  bsr      ax, cx
+0x0046f06e  bsr      eax, ecx
+0x0046f06f  mov      ebp, 0x458b66c1
+0x0046f070  shl      dword ptr [esi - 0x75], 0x45
+0x0046f071  mov      ax, word ptr [ebp + 2]
+0x0046f072  mov      eax, dword ptr [ebp + 2]
+0x0046f073  inc      ebp
+0x0046f074  add      bl, byte ptr [ecx + ecx*4 - 0x27fdbec]
+0x0046f075  pushfd   
+0x0046f076  mov      dword ptr [esp], edx
+0x0046f077  adc      al, 0x24
+0x0046f078  and      al, 0x80
+0x0046f079  cmp      ch, 0xa2
+0x0046f07a  std      
+0x0046f07b  mov      byte ptr [0xf804ed83], al
+0x0046f07c  sub      ebp, 4
+0x0046f07d  in       eax, dx
+0x0046f07e  add      al, 0xf8
+0x0046f07f  clc      
+0x0046f080  call     0x458e1e
+0x0046f085  bswap    ax
+0x0046f086  bswap    eax
+0x0046f087  enter    0x458b, 0
+0x0046f088  mov      eax, dword ptr [ebp]
+0x0046f08b  pushal   
+0x0046f08c  mov      edx, dword ptr [ebp + 4]
+0x0046f08f  bt       ebp, ebp
+0x0046f091  in       eax, dx
+0x0046f092  stc      
+0x0046f093  call     0x46e714
 0x0046f098  stc      
 0x0046f099  cmp      cl, al
 0x0046f09b  bswap    eax
@@ -1040,15 +1728,40 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f12a  push     0x94561fc4
 0x0046f12f  lea      esp, [esp + 0x3c]
 0x0046f133  jmp      0x46f960
+0x0046f138  mov      byte ptr [esp + 4], 0x21
+0x0046f139  inc      esp
+0x0046f13a  and      al, 4
+0x0046f13b  add      al, 0x21
+0x0046f13c  and      esi, edi
+0x0046f13d  inc      al
+0x0046f13e  sar      cl, 0xf8
+0x0046f13f  stc      
+0x0046f140  clc      
+0x0046f141  push     0x147baada
+0x0046f142  fisubr   dword ptr [edx - 0x3ccfeb85]
+0x0046f143  stosb    byte ptr es:[edi], al
+0x0046f144  jnp      0x46f15a
+0x0046f146  xor      bl, al
+0x0046f148  pushfd   
+0x0046f149  call     0x46eeb6
+0x0046f14a  push     0x83fffffd
+0x0046f14d  inc      dword ptr [ebx - 0x5763fd13]
 0x0046f14e  sub      ebp, 2
+0x0046f14f  in       eax, dx
+0x0046f150  add      bl, byte ptr [eax + ebp*4 + 0x669cf802]
 0x0046f151  pushfd   
 0x0046f152  test     al, 2
+0x0046f153  add      bh, al
 0x0046f154  clc      
 0x0046f155  pushfd   
 0x0046f156  shl      ax, cl
+0x0046f157  shl      eax, cl
 0x0046f159  push     0xd8a6808b
+0x0046f15a  mov      eax, dword ptr [eax - 0x399f275a]
 0x0046f15e  pushal   
 0x0046f15f  mov      byte ptr [esp], 0x60
+0x0046f160  add      al, 0x24
+0x0046f162  pushal   
 0x0046f163  mov      word ptr [ebp + 4], ax
 0x0046f167  pushfd   
 0x0046f168  lea      esp, [esp + 0x34]
@@ -1138,6 +1851,30 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f266  jmp      0x46f960
 0x0046f26b  cmp      bh, 0x6d
 0x0046f26e  mov      dx, word ptr [ebp]
+0x0046f272  sbb      cx, di
+0x0046f273  sbb      ecx, edi
+0x0046f274  stc      
+0x0046f275  bswap    ax
+0x0046f276  bswap    eax
+0x0046f277  enter    0x66f8, -0x75
+0x0046f278  clc      
+0x0046f279  mov      ax, word ptr [ebp + 2]
+0x0046f27a  mov      eax, dword ptr [ebp + 2]
+0x0046f27b  inc      ebp
+0x0046f27c  add      al, byte ptr [eax]
+0x0046f27d  add      cl, al
+0x0046f27e  rcl      edx, 0xc1
+0x0046f27f  rol      cl, cl
+0x0046f280  rol      dword ptr [eax - 0x7499b513], 0x4d
+0x0046f281  sub      ch, 0x4a
+0x0046f282  in       eax, dx
+0x0046f283  dec      edx
+0x0046f284  mov      cx, word ptr [ebp + 4]
+0x0046f285  mov      ecx, dword ptr [ebp + 4]
+0x0046f286  dec      ebp
+0x0046f287  add      al, 0x9c
+0x0046f288  pushfd   
+0x0046f289  call     0x46e491
 0x0046f28e  call     0x46e0b3
 0x0046f293  pushfd   
 0x0046f294  pushal   
@@ -1145,9 +1882,15 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f29c  inc      edx
 0x0046f29d  pushal   
 0x0046f29e  jmp      0x46fca5
+0x0046f2a3  call     0x46f656
+0x0046f2a4  scasb    al, byte ptr es:[edi]
+0x0046f2a5  add      eax, dword ptr [eax]
+0x0046f2a6  add      byte ptr [eax], al
+0x0046f2a7  add      byte ptr [ebx + 0x669c02ed], al
 0x0046f2a8  sub      ebp, 2
 0x0046f2ab  pushfd   
 0x0046f2ac  and      word ptr [ebp + 4], ax
+0x0046f2ad  and      dword ptr [ebp + 4], eax
 0x0046f2b0  pushfd   
 0x0046f2b1  call     0x46e3a8
 0x0046f2b6  add      ecx, 0
@@ -1203,7 +1946,15 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f348  mov      byte ptr [esp + 0xc], 0xa
 0x0046f34d  lea      esp, [esp + 0x38]
 0x0046f351  jmp      0x46fa90
+0x0046f356  pushfd   
+0x0046f357  call     0x46fde9
+0x0046f358  lea      ecx, [edx]
+0x0046f359  or       al, byte ptr [eax]
+0x0046f35a  add      byte ptr [eax], al
+0x0046f35b  add      byte ptr [esi - 0x77], ah
 0x0046f35c  mov      word ptr [esp + 0x10], dx
+0x0046f35e  push     esp
+0x0046f35f  and      al, 0x10
 0x0046f361  mov      word ptr [ebp], ax
 0x0046f365  pushfd   
 0x0046f366  mov      byte ptr [esp], 1
@@ -1217,7 +1968,15 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f381  push     0x2263d59
 0x0046f386  lea      esp, [esp + 0x3c]
 0x0046f38a  jmp      0x46fa90
+0x0046f38f  push     eax
+0x0046f390  call     0x46f9a4
+0x0046f391  clts     
+0x0046f392  push     es
+0x0046f393  add      byte ptr [eax], al
+0x0046f394  add      cl, ch
 0x0046f395  jmp      0x46f67f
+0x0046f396  in       eax, 2
+0x0046f398  add      byte ptr [eax], al
 0x0046f39a  not      al
 0x0046f39c  mov      dword ptr [esp], edx
 0x0046f39f  pushfd   
@@ -1363,6 +2122,7 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f567  sub      ebp, 2
 0x0046f56a  mov      byte ptr [esp], ah
 0x0046f56d  mov      word ptr [esp + 0xc], sp
+0x0046f56e  mov      dword ptr [esp + 0xc], esp
 0x0046f572  pushfd   
 0x0046f573  mov      word ptr [ebp], ax
 0x0046f577  mov      dword ptr [esp + 8], 0x817a9c2d
@@ -1378,9 +2138,17 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f5a1  mov      byte ptr [esp], cl
 0x0046f5a4  lea      esp, [esp + 0x50]
 0x0046f5a8  jmp      0x46f960
+0x0046f5ad  rol      ax, 2
+0x0046f5ae  rol      eax, 2
+0x0046f5b1  jmp      0x46f48c
+0x0046f5b5  dec      dword ptr [ebp + 0xf442464]
 0x0046f5b6  lea      esp, [esp + 0x44]
 0x0046f5ba  jbe      0x46f734
+0x0046f5bb  xchg     byte ptr [ecx + eax], dh
+0x0046f5bf  add      byte ptr [eax - 2], ch
 0x0046f5c0  push     0xa97497fe
+0x0046f5c2  xchg     edi, eax
+0x0046f5c3  je       0x46f56e
 0x0046f5c5  mov      eax, dword ptr [eax]
 0x0046f5c7  push     ecx
 0x0046f5c8  mov      dword ptr [ebp], eax
@@ -1389,17 +2157,46 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f5d3  pushfd   
 0x0046f5d4  lea      esp, [esp + 0x2c]
 0x0046f5d8  jmp      0x46f960
+0x0046f5dd  shl      al, 4
+0x0046f5de  loopne   0x46f5e4
+0x0046f5df  add      al, 0xf5
+0x0046f5e0  cmc      
+0x0046f5e1  setp     al
+0x0046f5e2  lcall    0x8400, 0x458b66c0
+0x0046f5e3  shl      byte ptr [esi - 0x75], 0x45
+0x0046f5e4  mov      ax, word ptr [ebp]
+0x0046f5e5  mov      eax, dword ptr [ebp]
+0x0046f5e6  inc      ebp
+0x0046f5e7  add      byte ptr [esi + edx*8 + 0x6602ed83], al
+0x0046f5e8  test     dh, dl
 0x0046f5e9  salc     
 0x0046f5ea  sub      ebp, 2
 0x0046f5ed  bt       sp, cx
+0x0046f5ee  bt       esp, ecx
+0x0046f5f0  int3     
 0x0046f5f1  stc      
 0x0046f5f2  add      word ptr [ebp + 4], ax
+0x0046f5f3  add      dword ptr [ebp + 4], eax
 0x0046f5f6  call     0x46ec0e
 0x0046f5fb  mov      word ptr [ebp], ax
 0x0046f5ff  push     0x56528265
 0x0046f604  pushfd   
 0x0046f605  lea      esp, [esp + 0x4c]
 0x0046f609  jmp      0x46f960
+0x0046f60e  bsr      ax, bp
+0x0046f60f  bsr      eax, ebp
+0x0046f610  mov      ebp, 0x5f8c0c5
+0x0046f612  sar      al, 5
+0x0046f615  bswap    ax
+0x0046f616  bswap    eax
+0x0046f617  enter    0x55f7, 0
+0x0046f618  not      dword ptr [ebp]
+0x0046f61b  bt       ax, dx
+0x0046f61c  bt       eax, edx
+0x0046f61f  mov      ax, word ptr [ebp]
+0x0046f620  mov      eax, dword ptr [ebp]
+0x0046f623  test     bl, al
+0x0046f625  jmp      0x46e26e
 0x0046f62a  add      ebp, 6
 0x0046f62d  call     0x46f395
 0x0046f632  rcl      dl, 2
@@ -1422,15 +2219,54 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f671  mov      byte ptr [esp], 0x8f
 0x0046f675  call     0x46fc95
 0x0046f67a  call     0x46eed9
+0x0046f67f  push     0x19f16e0e
+0x0046f680  push     cs
+0x0046f681  outsb    dx, byte ptr [esi]
+0x0046f682  int1     
+0x0046f683  sbb      dword ptr [eax - 0x9f63f0], ecx
+0x0046f684  mov      byte ptr [eax], dl
+0x0046f685  adc      byte ptr [eax + 0x42474ff], bl
+0x0046f686  pushfd   
+0x0046f687  pushal   
+0x0046f688  push     dword ptr [esp + 4]
+0x0046f689  je       0x46f6af
+0x0046f68a  and      al, 4
+0x0046f68b  add      al, 0x66
+0x0046f68c  mov      word ptr [esp + 4], si
+0x0046f68d  mov      dword ptr [esp + 4], esi
+0x0046f68e  je       0x46f6b4
+0x0046f68f  and      al, 4
+0x0046f690  add      al, 0x8d
+0x0046f691  lea      esp, [esp + 0x3c]
+0x0046f692  and      al, 0x3c
+0x0046f693  and      al, 0x3c
+0x0046f694  cmp      al, 0xe9
+0x0046f695  jmp      0x46f960
+0x0046f696  mov      byte ptr [edx], 0
+0x0046f697  add      al, byte ptr [eax]
+0x0046f698  add      byte ptr [eax], al
+0x0046f699  add      byte ptr [edi + ecx*4 - 0x63bbdbbc], bl
+0x0046f69a  pushfd   
+0x0046f69b  pop      dword ptr [esp + 0x44]
+0x0046f69c  inc      esp
+0x0046f69d  and      al, 0x44
+0x0046f69e  inc      esp
+0x0046f69f  pushfd   
+0x0046f6a0  jmp      0x46f500
+0x0046f6a4  jmp      dword ptr [eax - 0x64]
 0x0046f6a5  pushal   
 0x0046f6a6  pushfd   
 0x0046f6a7  mov      word ptr [ebp + 4], dx
 0x0046f6ab  call     0x46e6f0
+0x0046f6af  call     dword ptr [esp + ebx*4 + 0x50]
 0x0046f6b0  push     esp
 0x0046f6b1  pushfd   
 0x0046f6b2  push     eax
 0x0046f6b3  mov      dword ptr [esp + 8], esi
+0x0046f6b4  je       0x46f6da
+0x0046f6b6  or       byte ptr [esi + 0xf], ah
 0x0046f6b7  bswap    si
+0x0046f6b9  into     
 0x0046f6ba  pushfd   
 0x0046f6bb  mov      esi, edx
 0x0046f6bd  movzx    di, bl
@@ -1443,7 +2279,14 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f6da  mov      byte ptr [esp + 8], 0x3d
 0x0046f6df  lea      esp, [esp + 0x24]
 0x0046f6e3  jmp      0x46fa90
+0x0046f6e8  call     0x46fafe
+0x0046f6e9  adc      dword ptr [eax + eax], eax
+0x0046f6ea  add      al, 0
+0x0046f6eb  add      byte ptr [eax], al
+0x0046f6ec  add      bh, bh
 0x0046f6ed  push     dword ptr [esp + 0x28]
+0x0046f6ee  je       0x46f714
+0x0046f6f0  sub      byte ptr [edi - 0x6363ffbb], cl
 0x0046f6f1  pop      dword ptr [ebp]
 0x0046f6f4  pushfd   
 0x0046f6f5  pushfd   
@@ -1451,7 +2294,29 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f6fa  push     0x22e6b09c
 0x0046f6ff  lea      esp, [esp + 0x38]
 0x0046f703  jmp      0x46fa90
+0x0046f708  push     dword ptr [esp + 0x28]
+0x0046f709  je       0x46f72f
+0x0046f70a  and      al, 0x28
+0x0046f70b  sub      byte ptr [edi + 0x44c60045], cl
+0x0046f70c  pop      dword ptr [ebp]
+0x0046f70d  inc      ebp
+0x0046f70e  add      dh, al
+0x0046f70f  mov      byte ptr [esp + 0x10], 0x98
+0x0046f710  inc      esp
+0x0046f711  and      al, 0x10
+0x0046f712  adc      byte ptr [eax + 0x2c24648d], bl
+0x0046f713  cwde     
+0x0046f714  lea      esp, [esp + 0x2c]
+0x0046f715  and      al, 0x2c
+0x0046f716  and      al, 0x2c
+0x0046f717  sub      al, 0xe9
+0x0046f718  jmp      0x46fa90
+0x0046f719  jae      0x46f71e
+0x0046f71a  add      eax, dword ptr [eax]
+0x0046f71b  add      byte ptr [eax], al
+0x0046f71c  add      byte ptr [ecx], al
 0x0046f71d  add      ebx, eax
+0x0046f71e  ret      
 0x0046f71f  test     ax, 0x7b60
 0x0046f723  sub      ebp, 4
 0x0046f726  call     0x46e6f9
@@ -1468,6 +2333,10 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f746  push     dword ptr [esp]
 0x0046f749  mov      dword ptr [esp], 0xb47b954b
 0x0046f750  lea      esp, [esp + 0x38]
+0x0046f754  jmp      0x46f960
+0x0046f755  pop      es
+0x0046f756  add      al, byte ptr [eax]
+0x0046f757  add      byte ptr [eax], al
 0x0046f758  add      cl, ch
 0x0046f759  jmp      0x46fd6a
 0x0046f75a  or       al, 6
@@ -1482,11 +2351,60 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f773  movzx    si, al
 0x0046f777  mov      edi, dword ptr [esp + 0x14]
 0x0046f77b  jmp      0x46f24a
+0x0046f780  pushal   
+0x0046f781  mov      bp, word ptr [ebp]
+0x0046f782  mov      ebp, dword ptr [ebp]
+0x0046f783  insd     dword ptr es:[edi], dx
+0x0046f784  add      byte ptr [ecx + 0x648d2434], cl
 0x0046f785  mov      dword ptr [esp], esi
+0x0046f786  xor      al, 0x24
+0x0046f787  and      al, 0x8d
 0x0046f788  lea      esp, [esp + 0x28]
+0x0046f789  and      al, 0x28
+0x0046f78a  and      al, 0x28
+0x0046f78b  sub      cl, ch
 0x0046f78c  jmp      0x46fa90
+0x0046f78d  inc      dword ptr [edx]
+0x0046f78e  add      al, byte ptr [eax]
+0x0046f78f  add      byte ptr [eax], al
+0x0046f790  add      byte ptr [ebx - 0x18287af4], cl
 0x0046f791  mov      ecx, dword ptr [eax*4 + 0x46e7d7]
+0x0046f796  inc      esi
+0x0046f797  add      cl, ch
 0x0046f798  jmp      0x46f9f3
+0x0046f799  push     esi
+0x0046f79a  add      al, byte ptr [eax]
+0x0046f79c  add      byte ptr [eax - 0x17], ah
+0x0046f79d  pushal   
+0x0046f79e  jmp      0x46ed5e
+0x0046f79f  mov      ebx, 0x89fffff5
+0x0046f7a2  dec      dword ptr [ecx - 0xfbdbbc]
+0x0046f7a3  mov      dword ptr [esp + 4], eax
+0x0046f7a4  inc      esp
+0x0046f7a5  and      al, 4
+0x0046f7a6  add      al, 0xff
+0x0046f7a7  push     dword ptr [esp]
+0x0046f7a8  xor      al, 0x24
+0x0046f7a9  and      al, 0x60
+0x0046f7aa  pushal   
+0x0046f7ab  lea      esp, [esp + 0x28]
+0x0046f7ac  and      al, 0x28
+0x0046f7ad  and      al, 0x28
+0x0046f7ae  sub      byte ptr [edi], cl
+0x0046f7af  jno      0x46f79d
+0x0046f7b0  sub      eax, 0x50ffffff
+0x0046f7b1  call     0x5146f7b5
+0x0046f7b4  call     dword ptr [eax - 0x77]
+0x0046f7b5  push     eax
+0x0046f7b6  mov      dword ptr [esp], edx
+0x0046f7b7  adc      al, 0x24
+0x0046f7b8  and      al, 0x9c
+0x0046f7b9  pushfd   
+0x0046f7ba  pushal   
+0x0046f7bb  lea      esp, [esp + 0x24]
+0x0046f7bc  and      al, 0x24
+0x0046f7bd  and      al, 0x24
+0x0046f7bf  jmp      0x46f39f
 0x0046f7c4  push     dword ptr [esp]
 0x0046f7c7  pushfd   
 0x0046f7c8  mov      dword ptr [ebp + 8], eax
@@ -1496,6 +2414,26 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f7ce  pushfd   
 0x0046f7cf  pop      dword ptr [esp + 0x3c]
 0x0046f7d3  call     0x46e402
+0x0046f7ee  jp       0x46f7f3
+0x0046f7ef  add      eax, dword ptr [eax]
+0x0046f7f0  add      byte ptr [eax], al
+0x0046f7f1  add      dl, dl
+0x0046f7f2  shr      dh, cl
+0x0046f7f3  out      dx, al
+0x0046f7f4  shld     ax, di, cl
+0x0046f7f5  shld     eax, edi, cl
+0x0046f7f6  movsd    dword ptr es:[edi], dword ptr [esi]
+0x0046f7f7  clc      
+0x0046f7f8  shr      ah, 5
+0x0046f7f9  in       al, dx
+0x0046f7fa  add      eax, 0x8566310f
+0x0046f7fb  rdtsc    
+0x0046f7fc  xor      dword ptr [esi - 0x7b], esp
+0x0046f7fd  test     ax, di
+0x0046f7fe  test     eax, edi
+0x0046f7ff  clc      
+0x0046f800  sub      ebp, 8
+0x0046f803  call     0x46ed59
 0x0046f808  jmp      0x46f17a
 0x0046f80d  xor      al, 0x75
 0x0046f80f  cmc      
@@ -1510,10 +2448,93 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f82e  rcl      dl, 1
 0x0046f830  clc      
 0x0046f831  not      al
+0x0046f833  neg      edx
+0x0046f834  fisub    dword ptr [esi - 0x2d]
+0x0046f835  shr      dx, cl
+0x0046f836  shr      edx, cl
+0x0046f837  ljmp     0x66f2:0xb30f4704
+0x0046f838  add      al, 0x47
+0x0046f839  inc      edi
+0x0046f83a  btr      edx, esi
+0x0046f83b  mov      bl, 0xf2
+0x0046f83d  bsr      dx, ax
+0x0046f83e  bsr      edx, eax
+0x0046f83f  mov      ebp, 0xfe6d2d0
+0x0046f840  rcl      dl, 1
+0x0046f841  shl      dh, cl
+0x0046f842  out      0xf, al
+0x0046f843  shrd     edx, ebx, 0x1b
+0x0046f844  lodsb    al, byte ptr [esi]
+0x0046f845  ficomp   dword ptr [ebx]
+0x0046f847  xor      al, 0xd
+0x0046f849  bt       bx, 5
+0x0046f84a  bt       ebx, 5
+0x0046f84b  mov      edx, 0xc8c005e3
+0x0046f84c  jecxz    0x46f853
+0x0046f84e  ror      al, 7
+0x0046f84f  enter    0x2007, -0x22
+0x0046f850  pop      es
+0x0046f851  and      dh, bl
+0x0046f853  sal      dh, cl
+0x0046f854  test     byte ptr [eax - 0x3e08c320], 3
+0x0046f855  and      al, 0x3c
+0x0046f856  loopne   0x46f894
+0x0046f857  cmp      al, 0xf7
+0x0046f858  test     ecx, 0x5db97103
+0x0046f859  rol      dword ptr [ebx], 0x71
+0x0046f85a  add      esi, dword ptr [ecx - 0x47]
+0x0046f85b  jno      0x46f816
+0x0046f85c  mov      ecx, 0x61850f5d
+0x0046f85d  pop      ebp
+0x0046f85e  jne      0x46e0c5
+0x0046f860  popal    
+0x0046f861  call     0x14d2f865
+0x0046f863  dec      dword ptr [ebx - 0x357bf8ec]
+0x0046f864  mov      edx, dword ptr [edi + eax]
+0x0046f865  adc      al, 7
+0x0046f866  pop      es
+0x0046f867  test     dl, cl
+0x0046f869  pushfd   
+0x0046f86a  pushfd   
+0x0046f86b  sub      ebp, 4
+0x0046f86c  in       eax, dx
+0x0046f86d  add      al, 0x89
+0x0046f86e  mov      dword ptr [esp + 4], edi
+0x0046f86f  jl       0x46f895
+0x0046f870  and      al, 4
+0x0046f871  add      al, 0x9c
+0x0046f872  pushfd   
+0x0046f873  mov      dword ptr [ebp], edx
+0x0046f874  push     ebp
+0x0046f875  add      byte ptr [edx + 0x66], dl
+0x0046f876  push     edx
+0x0046f877  mov      word ptr [esp + 4], 0xd7ba
+0x0046f878  mov      dword ptr [esp + 4], 0x4488d7ba
+0x0046f879  inc      esp
+0x0046f87a  and      al, 4
+0x0046f87b  add      al, 0xba
+0x0046f87c  mov      edx, 0x244488d7
+0x0046f87d  xlatb    
+0x0046f87e  mov      byte ptr [esp + 4], al
+0x0046f87f  inc      esp
+0x0046f880  and      al, 4
+0x0046f881  add      al, 0x8d
+0x0046f882  lea      esp, [esp + 0x10]
+0x0046f883  and      al, 0x10
+0x0046f884  and      al, 0x10
+0x0046f885  adc      cl, ch
+0x0046f886  jmp      0x46fa90
+0x0046f887  add      eax, 0x66000002
+0x0046f888  add      al, byte ptr [eax]
+0x0046f889  add      byte ptr [eax], al
+0x0046f88a  add      byte ptr [esi - 9], ah
 0x0046f88b  not      di
+0x0046f88c  not      edi
+0x0046f88d  xlatb    
 0x0046f88e  lea      edi, [eax + ecx - 0x40]
 0x0046f892  cld      
 0x0046f893  call     0x46f649
+0x0046f895  std      
 0x0046f898  push     dword ptr [esp + 0x50]
 0x0046f89c  pop      dword ptr [ebp]
 0x0046f89f  mov      dword ptr [esp], 0xccca4a2f
@@ -1522,12 +2543,44 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046f8ae  mov      word ptr [esp], si
 0x0046f8b2  lea      esp, [esp + 0x54]
 0x0046f8b6  jmp      0x46f960
+0x0046f8bb  call     0x46f982
+0x0046f8bd  add      byte ptr [eax], al
+0x0046f8be  add      byte ptr [eax], al
+0x0046f8bf  add      byte ptr [eax - 0x3e992e3e], al
+0x0046f8c0  add      dl, 0xd1
+0x0046f8c2  shl      dword ptr [esi - 0x3f], 1
+0x0046f8c3  rcr      dx, 3
+0x0046f8c4  rcr      edx, 3
+0x0046f8c5  fiadd    dword ptr [ebx]
+0x0046f8c6  add      esp, dword ptr [esi + 0xf]
+0x0046f8c7  btr      ax, sp
+0x0046f8c8  btr      eax, esp
+0x0046f8c9  mov      bl, 0xe0
+0x0046f8ca  loopne   0x46f92c
+0x0046f8cb  pushal   
+0x0046f8cc  mov      eax, dword ptr [ebp]
+0x0046f8cd  inc      ebp
+0x0046f8ce  add      byte ptr [edi], cl
+0x0046f8cf  bsf      edx, edx
+0x0046f8d0  mov      esp, 0x4558bd2
+0x0046f8d1  ror      byte ptr [ebx - 0x277bfbab], cl
+0x0046f8d2  mov      edx, dword ptr [ebp + 4]
+0x0046f8d3  push     ebp
+0x0046f8d4  add      al, 0x84
+0x0046f8d5  test     al, bl
+0x0046f8d6  fdivr    st(7)
+0x0046f8d7  push     dword ptr [esp]
 0x0046f8d8  xor      al, 0x24
+0x0046f8d9  and      al, 0x83
 0x0046f8da  add      ebp, 8
+0x0046f8db  lds      ecx, ptr [eax]
 0x0046f8dd  pushfd   
 0x0046f8de  pushfd   
 0x0046f8df  jmp      0x46ed09
+0x0046f8e0  and      eax, 0x68fffff4
 0x0046f8e4  push     0xe74db9ac
+0x0046f8e5  lodsb    al, byte ptr [esi]
+0x0046f8e6  mov      ecx, 0xd0f7e74d
 0x0046f8e9  not      eax
 0x0046f8eb  jmp      0x46fc73
 0x0046f8f0  neg      al
@@ -1615,7 +2668,47 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046fa14  mov      word ptr [esp], 0xec07
 0x0046fa1a  push     ecx
 0x0046fa1b  jmp      0x46fd7d
+0x0046fa20  aaa      
+0x0046fa21  mov      eax, ebp
+0x0046fa22  call     0x2d8010
+0x0046fa23  jmp      0x46e0ad
+0x0046fa25  out      0xff, al
+0x0046fa27  inc      dword ptr [eax - 0x64]
+0x0046fa28  inc      eax
+0x0046fa29  pushfd   
+0x0046fa2a  mov      ah, 0x89
+0x0046fa2b  mov      dword ptr [ebx - 0x3f07ffbb], ecx
+0x0046fa2c  mov      eax, dword ptr [ebp]
+0x0046fa2d  inc      ebp
+0x0046fa2e  add      al, bh
+0x0046fa2f  clc      
+0x0046fa30  sal      cl, 2
+0x0046fa31  int1     
+0x0046fa32  add      cl, byte ptr [edx - 0x7c07fbb3]
+0x0046fa33  mov      cl, byte ptr [ebp + 4]
+0x0046fa34  dec      ebp
+0x0046fa35  add      al, 0xf8
+0x0046fa36  clc      
+0x0046fa37  sub      ebp, 2
+0x0046fa38  in       eax, dx
+0x0046fa39  add      bh, byte ptr [ecx]
+0x0046fa3a  cmp      esi, esi
+0x0046fa3b  div      ch
+0x0046fa3c  cmc      
+0x0046fa3d  bt       sp, di
+0x0046fa3e  bt       esp, edi
+0x0046fa3f  mov      dword ptr [0xe8e8d3fc], eax
+0x0046fa40  cld      
+0x0046fa41  shr      eax, cl
+0x0046fa42  call     0x47882f
+0x0046fa43  call     0x46fad5
+0x0046fa44  lea      eax, [eax]
+0x0046fa45  add      byte ptr [eax], al
+0x0046fa46  add      byte ptr [eax], al
+0x0046fa47  add      cl, ch
 0x0046fa48  jmp      0x46fc85
+0x0046fa49  cmp      byte ptr [edx], al
+0x0046fa4b  add      byte ptr [eax], al
 0x0046fa4d  push     dword ptr [esp]
 0x0046fa50  mov      di, 0x7a91
 0x0046fa54  pushfd   
@@ -1702,6 +2795,22 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046fb55  push     eax
 0x0046fb56  pushal   
 0x0046fb57  push     ecx
+0x0046fb58  add      dword ptr [ebp + 4], eax
+0x0046fb59  inc      ebp
+0x0046fb5a  add      al, 0x9c
+0x0046fb5b  pushfd   
+0x0046fb5c  pushfd   
+0x0046fb5d  pushfd   
+0x0046fb5e  mov      byte ptr [esp + 4], dl
+0x0046fb5f  push     esp
+0x0046fb60  and      al, 4
+0x0046fb61  add      al, 0x9c
+0x0046fb62  pushfd   
+0x0046fb63  pop      dword ptr [esp + 0x34]
+0x0046fb64  inc      esp
+0x0046fb65  and      al, 0x34
+0x0046fb67  call     0x46e550
+0x0046fb6c  jmp      0x46f708
 0x0046fb71  call     0x46f62a
 0x0046fb76  cld      
 0x0046fb77  aad      0x72
@@ -1762,6 +2871,17 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046fc11  push     0xed451a79
 0x0046fc16  lea      esp, [esp + 0x14]
 0x0046fc1a  jmp      0x46f960
+0x0046fc1f  cmc      
+0x0046fc20  cwde     
+0x0046fc21  stc      
+0x0046fc22  clc      
+0x0046fc23  sub      ebp, 4
+0x0046fc24  in       eax, dx
+0x0046fc25  add      al, 0xe8
+0x0046fc26  call     0x46e36e
+0x0046fc27  inc      ebx
+0x0046fc28  out      0xff, eax
+0x0046fc2a  call     ptr [esp + ebx*4 + 0xc24448f]
 0x0046fc2b  pushfd   
 0x0046fc2c  pushfd   
 0x0046fc2d  pop      dword ptr [esp + 0xc]
@@ -1781,6 +2901,10 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046fc5a  pushfd   
 0x0046fc5b  mov      word ptr [esp], bp
 0x0046fc5f  lea      esp, [esp + 0x28]
+0x0046fc63  jmp      0x46f39f
+0x0046fc64  aaa      
+0x0046fc65  idiv     edi
+0x0046fc67  call     ptr [esp + ebx*4 + 0x4c24448f]
 0x0046fc68  pushfd   
 0x0046fc69  pushfd   
 0x0046fc6a  pop      dword ptr [esp + 0x4c]
@@ -1847,6 +2971,17 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046fd2b  mov      word ptr [ebp + 4], ax
 0x0046fd2f  mov      word ptr [esp + 4], 0x1b75
 0x0046fd36  call     0x46e2b2
+0x0046fd3b  push     dword ptr [esp]
+0x0046fd3c  xor      al, 0x24
+0x0046fd3d  and      al, 0x9c
+0x0046fd3e  pushfd   
+0x0046fd3f  pop      dword ptr [esp + 0x1c]
+0x0046fd40  inc      esp
+0x0046fd41  and      al, 0x1c
+0x0046fd42  sbb      al, 0xe9
+0x0046fd43  jmp      0x46f6cb
+0x0046fd44  cmp      ecx, -1
+0x0046fd47  jmp      dword ptr [eax - 0x64]
 0x0046fd48  pushal   
 0x0046fd49  pushfd   
 0x0046fd4a  pop      dword ptr [esp + 0x24]
@@ -1859,6 +2994,20 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046fd63  pushfd   
 0x0046fd64  pushal   
 0x0046fd65  jmp      0x46f035
+0x0046fd6a  mov      dword ptr [ebp], eax
+0x0046fd6b  inc      ebp
+0x0046fd6c  add      byte ptr [eax + ebp*2 - 0x37660088], bl
+0x0046fd6d  pushfd   
+0x0046fd6e  push     0xc899ff78
+0x0046fd6f  js       0x46fd70
+0x0046fd70  call     ptr [ecx + 0x648d55c8]
+0x0046fd71  cdq      
+0x0046fd72  enter    -0x72ab, 0x64
+0x0046fd73  push     ebp
+0x0046fd74  lea      esp, [esp + 0x34]
+0x0046fd75  and      al, 0x34
+0x0046fd76  and      al, 0x34
+0x0046fd78  jmp      0x46fa90
 0x0046fd7d  call     0x46fa7f
 0x0046fd82  push     ebp
 0x0046fd83  cmp      bx, 0xed4e
@@ -1872,12 +3021,25 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046fd9b  mov      word ptr [esp], di
 0x0046fd9f  pushal   
 0x0046fda0  bt       bp, 1
+0x0046fda2  mov      edx, 0xed8301e5
 0x0046fda5  sub      ebp, 2
+0x0046fda7  add      ah, byte ptr [esi - 0x77]
 0x0046fda8  mov      word ptr [esp + 8], di
+0x0046fdaa  jl       0x46fdd0
+0x0046fdac  or       al, bh
 0x0046fdad  clc      
 0x0046fdae  test     edx, esp
 0x0046fdb0  jmp      0x46f306
+0x0046fdb5  shr      dh, cl
+0x0046fdb6  out      dx, al
+0x0046fdb7  adc      al, 0x7e
+0x0046fdb8  jle      0x46fda2
+0x0046fdb9  call     0x46e564
+0x0046fdba  cmpsb    byte ptr [esi], byte ptr es:[edi]
+0x0046fdbb  out      0xff, eax
+0x0046fdbd  inc      dword ptr [eax]
 0x0046fdbe  add      al, bl
+0x0046fdbf  fcomp    dword ptr [ecx + 0x60]
 0x0046fdc0  pop      ecx
 0x0046fdc1  pushal   
 0x0046fdc2  pop      ecx
@@ -1885,6 +3047,7 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046fdc5  btc      cx, 0xc
 0x0046fdca  ror      al, 2
 0x0046fdcd  movsx    cx, al
+0x0046fdd0  enter    0x32e8, -0x18
 0x0046fdd1  call     0x46e608
 0x0046fdd6  sub      esp, -0x2c
 0x0046fdd9  jno      0x46e5bf
@@ -1899,24 +3062,184 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0046fdfe  pushfd   
 0x0046fdff  lea      esp, [esp + 0x44]
 0x0046fe03  jmp      0x46f960
+0x0046fe08  push     ebx
+0x0046fe09  mov      byte ptr [esp], ah
+0x0046fe0a  and      al, 0x24
+0x0046fe0b  and      al, 0xff
+0x0046fe0c  push     dword ptr [esp]
 0x0046fe0d  xor      al, 0x24
+0x0046fe0e  and      al, 0x60
 0x0046fe0f  pushal   
 0x0046fe10  mov      dword ptr [esp + 0x24], eax
+0x0046fe11  inc      esp
+0x0046fe12  and      al, 0x24
+0x0046fe13  and      al, 0xc6
 0x0046fe14  mov      byte ptr [esp + 8], 0xef
+0x0046fe15  inc      esp
+0x0046fe16  and      al, 8
+0x0046fe17  or       bh, ch
+0x0046fe18  out      dx, eax
 0x0046fe19  mov      byte ptr [esp], bh
+0x0046fe1a  cmp      al, 0x24
+0x0046fe1b  and      al, 0x89
 0x0046fe1c  mov      dword ptr [esp + 0x20], edx
+0x0046fe1d  push     esp
+0x0046fe1e  and      al, 0x20
+0x0046fe1f  and      byte ptr [eax + 0x68], ah
 0x0046fe20  pushal   
 0x0046fe21  push     0x262cef7b
+0x0046fe22  jnp      0x46fe13
+0x0046fe23  out      dx, eax
+0x0046fe24  sub      al, 0x26
+0x0046fe25  lea      esp, es:[esp + 0x44]
 0x0046fe26  lea      esp, [esp + 0x44]
+0x0046fe27  and      al, 0x44
+0x0046fe28  and      al, 0x44
+0x0046fe29  inc      esp
 0x0046fe2a  jmp      0x46f39f
+0x0046fe2e  dec      dword ptr [eax - 0x3d6ef026]
+0x0046fe2f  mov      dl, bl
+0x0046fe31  setno    dl
+0x0046fe34  movsx    ax, bl
+0x0046fe35  movsx    eax, bl
+0x0046fe38  das      
+0x0046fe39  mov      eax, dword ptr [ebp]
+0x0046fe3c  shl      dl, cl
+0x0046fe3e  inc      dl
+0x0046fe40  and      dl, 0x66
+0x0046fe41  loop     0x46fea9
+0x0046fe42  mov      dl, byte ptr [ebp + 4]
+0x0046fe43  mov      dl, byte ptr [ebp + 4]
+0x0046fe46  test     cl, al
+0x0046fe48  jmp      0x46eda8
+0x0046fe4c  dec      dword ptr [ecx + 0x60082454]
 0x0046fe4d  mov      dword ptr [esp + 8], edx
 0x0046fe51  pushal   
 0x0046fe52  pushfd   
 0x0046fe53  lea      esp, [esp + 0x2c]
 0x0046fe57  jmp      0x46f39f
+0x0046fe65  mov      al, 0xf5
+0x0046fe66  cmc      
+0x0046fe67  cmp      esp, 0x49328f66
+0x0046fe6c  dec      ecx
+0x0046fe6d  movzx    eax, byte ptr [esi - 1]
+0x0046fe71  push     0x2a0b69fe
+0x0046fe73  imul     ecx, dword ptr [ebx], 0x60d8302a
+0x0046fe74  or       ebp, dword ptr [edx]
+0x0046fe75  sub      dh, byte ptr [eax]
+0x0046fe76  xor      al, bl
+0x0046fe77  fsub     dword ptr [eax + 0x66]
+0x0046fe78  pushal   
+0x0046fe79  bt       bx, ax
+0x0046fe7a  bt       ebx, eax
+0x0046fe7b  mov      dword ptr [0x2444c7c3], eax
+0x0046fe7d  mov      dword ptr [esp + 4], 0x3b9ad5b9
+0x0046fe7e  inc      esp
+0x0046fe7f  and      al, 4
+0x0046fe80  add      al, 0xb9
+0x0046fe81  mov      ecx, 0xe83b9ad5
+0x0046fe82  aad      0x9a
+0x0046fe83  lcall    0xffff, 0xf983e83b
+0x0046fe84  cmp      ebp, eax
+0x0046fe85  call     0x46f80d
+0x0046fe86  cmp      ecx, -1
+0x0046fe89  call     edx
+0x0046fe8a  rcl      cl, cl
+0x0046fe8b  shl      dword ptr [esi - 0x75], 1
+0x0046fe8c  mov      ax, word ptr [ebp]
+0x0046fe8d  mov      eax, dword ptr [ebp]
+0x0046fe8e  inc      ebp
+0x0046fe8f  add      al, al
+0x0046fe90  sal      cl, 7
+0x0046fe91  int1     
+0x0046fe92  pop      es
+0x0046fe93  mov      cl, byte ptr [ebp + 2]
+0x0046fe94  dec      ebp
+0x0046fe95  add      bh, byte ptr [eax]
+0x0046fe96  cmp      cl, dh
+0x0046fe97  int1     
+0x0046fe98  cmp      bx, 0xa398
+0x0046fe99  cmp      ebx, 0xf238a398
+0x0046fe9d  cmp      dl, dh
+0x0046fe9e  bnd call 0x46f14e
+0x0046fe9f  call     0x46f14e
+0x0046fea4  call     0x46ed13
+0x0046fea9  pushal   
+0x0046feaa  push     dword ptr [esp]
+0x0046feab  xor      al, 0x24
+0x0046feac  and      al, 0x89
+0x0046fead  mov      dword ptr [esp + 0x24], eax
+0x0046feae  inc      esp
+0x0046feaf  and      al, 0x24
+0x0046feb0  and      al, 0x9c
+0x0046feb1  pushfd   
+0x0046feb2  pushfd   
+0x0046feb3  mov      dword ptr [esp + 0x28], edx
+0x0046feb4  push     esp
+0x0046feb5  and      al, 0x28
+0x0046feb6  sub      byte ptr [ecx + ecx*4 - 0x6363dbe4], bl
+0x0046feb7  pushfd   
+0x0046feb8  mov      dword ptr [esp], ebx
+0x0046feb9  sbb      al, 0x24
+0x0046feba  and      al, 0x9c
+0x0046febb  pushfd   
+0x0046febc  pushfd   
+0x0046febd  lea      esp, [esp + 0x34]
+0x0046febe  and      al, 0x34
+0x0046febf  and      al, 0x34
+0x0046fec1  jmp      0x46f39f
+0x0046fec6  cbw      
+0x0046fec7  cwde     
+0x0046fec8  mov      ax, word ptr [esi - 2]
+0x0046fec9  mov      eax, dword ptr [esi - 2]
+0x0046fecc  cmc      
+0x0046fecd  stc      
+0x0046fece  cmp      bx, 0x9e27
+0x0046fecf  cmp      ebx, 0xe0869e27
+0x0046fed0  sti      
+0x0046fed1  daa      
+0x0046fed2  sahf     
+0x0046fed3  xchg     al, ah
+0x0046fed4  loopne   0x46fece
+0x0046fed5  clc      
+0x0046fed6  add      ax, bx
+0x0046fed7  add      eax, ebx
+0x0046fed8  fsub     dword ptr [eax - 0x64]
+0x0046fed9  pushal   
+0x0046feda  pushfd   
+0x0046fedb  stc      
+0x0046fedc  pushfd   
+0x0046fedd  sub      ax, 0x59
+0x0046fede  sub      eax, 0x54880059
+0x0046fedf  pop      ecx
+0x0046fee0  add      byte ptr [eax - 0x7f7dbac], cl
+0x0046fee1  mov      byte ptr [esp + 8], dl
+0x0046fee2  push     esp
+0x0046fee3  and      al, 8
+0x0046fee4  or       al, bh
+0x0046fee5  clc      
+0x0046fee6  add      esi, -2
+0x0046fee9  cmc      
+0x0046feea  bt       di, cx
+0x0046feeb  bt       edi, ecx
+0x0046feed  iretd    
+0x0046feee  call     0x46ef95
+0x0046fef3  dec      ecx
+0x0046fef4  stc      
+0x0046fef5  mov      dword ptr [0x55a022df], eax
+0x0046fefa  test     eax, esi
+0x0046fefc  cmc      
+0x0046fefd  xchg     edx, eax
+0x0046fefe  mov      al, byte ptr [0x607b3adf]
+0x0046ff03  cld      
+0x0046ff04  cli      
+0x0046ff05  stosb    byte ptr es:[edi], al
+0x0046ff06  lcall    0xb2c5, 0x3024dfa0
 0x0046ff08  fbld     tbyte ptr [eax + esi]
 0x0046ff0b  lds      esi, ptr [edx - 0x5f7a560e]
+0x0046ff0d  test     eax, 0xcdfa085
 0x0046ff11  fisttp   word ptr [edi + ebx*4]
+0x0046ff13  lahf     
 0x0046ff14  std      
 0x0046ff17  inc      eax
 0x0046ff18  and      byte ptr [eax - 0x4fb4b021], 0x87
@@ -2022,6 +3345,9 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047008b  fistp    word ptr [ebp - 0x7d]
 0x0047008e  adc      dword ptr [edx - 0x5f782f0b], eax
 0x00470094  fistp    word ptr [esp + edi*2 - 0x44]
+0x00470173  xchg     edi, eax
+0x00470174  mov      al, byte ptr [0x41bc61df]
+0x00470179  retf     0x64ff
 0x004701c9  pop      ss
 0x004701ca  stosd    dword ptr es:[edi], eax
 0x004701cb  cli      
@@ -2032,24 +3358,52 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x004701d5  push     ss
 0x004701d6  xchg     ebx, eax
 0x004701d7  mov      al, byte ptr [0x9f5b61df]
+0x004701dd  hlt      
+0x004701de  jno      0x470173
+0x004701df  xchg     ebx, eax
+0x004701e0  mov      al, byte ptr [0xd1875edf]
+0x004701e1  fistp    word ptr [esi - 0x79]
+0x004701e2  pop      esi
+0x004701e3  xchg     ecx, edx
 0x004701e4  rol      dword ptr [ebp - 6], 1
+0x004701e5  inc      ebp
+0x004701e6  cli      
 0x004701e7  xlatb    
 0x004701e8  xchg     ebx, eax
 0x004701e9  mov      al, byte ptr [0xd3fc5fdf]
+0x004701ea  fistp    word ptr [edi - 4]
+0x004701eb  pop      edi
+0x004701ec  cld      
+0x004701ed  rol      dword ptr [edx - 0xd], cl
 0x004701ee  inc      edx
 0x004701ef  xor      al, 0x92
+0x004701f0  xor      al, 0x92
+0x004701f1  xchg     edx, eax
 0x004701f2  mov      al, byte ptr [0xbe6164df]
+0x004701f3  fbld     tbyte ptr [ecx - 0x42]
+0x004701f4  popal    
+0x004701f5  popal    
+0x004701f6  mov      esi, 0x9290f916
 0x004701f7  push     ss
 0x004701f8  stc      
 0x004701f9  nop      
 0x004701fa  xchg     edx, eax
 0x004701fb  mov      al, byte ptr [0xe5aa5bdf]
+0x004701fc  fistp    word ptr [ebx - 0x56]
+0x004701fd  pop      ebx
+0x004701fe  stosb    byte ptr es:[edi], al
+0x004701ff  in       eax, 0x1e
 0x00470200  push     ds
 0x00470201  cmc      
 0x00470202  out      dx, eax
 0x00470203  cli      
 0x00470204  mov      dword ptr [0xbcb462df], eax
+0x00470205  fbld     tbyte ptr [edx - 0x4c]
+0x00470206  bound    esi, qword ptr [esp + edi*4 + 0x609cf8e3]
+0x00470207  mov      ah, 0xbc
+0x00470208  mov      esp, 0x609cf8e3
 0x00470209  jecxz    0x470203
+0x0047020a  clc      
 0x0047020b  pushfd   
 0x0047020c  pushal   
 0x0047020d  lea      esp, [esp + 0x24]
@@ -2733,6 +4087,7 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00470aff  call     0x475cea
 0x00470b04  pushal   
 0x00470b05  push     0x5e5db8e5
+0x00470b09  pop      esi
 0x00470b0a  pushal   
 0x00470b0b  call     0x4717e5
 0x00470b10  pushal   
@@ -2769,10 +4124,42 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00470b75  push     dword ptr [esp + 8]
 0x00470b79  ret      0xc
 0x00470b7c  and      eax, 0xb01b676c
+0x00470b81  cli      
+0x00470b82  cli      
+0x00470b83  cmpsb    byte ptr [esi], byte ptr es:[edi]
+0x00470b84  pushfd   
+0x00470b85  and      dword ptr [edx - 0x7f], esi
+0x00470b86  jb       0x470b09
+0x00470b87  add      dword ptr [eax + edi - 0x7c9c87d7], 0xf8af4342
+0x00470b88  test     byte ptr [eax], bh
+0x00470b89  cmp      byte ptr [ecx], ch
+0x00470b8a  sub      dword ptr [eax + 0x63], edi
+0x00470b8b  js       0x470bf0
+0x00470b8c  arpl     word ptr [ebx - 0x750bcbe], ax
+0x00470b8d  add      dword ptr [edx + 0x43], -0x51
+0x00470b8e  inc      edx
+0x00470b8f  inc      ebx
+0x00470b90  scasd    eax, dword ptr es:[edi]
+0x00470b91  clc      
+0x00470b92  stosd    dword ptr es:[edi], eax
+0x00470b93  jo       0x470b32
+0x00470b95  push     ss
+0x00470b96  jge      0x470ba8
+0x00470b98  in       al, dx
+0x00470b99  cwde     
+0x00470b9a  mov      bh, 0xb4
+0x00470b9c  cmc      
+0x00470b9d  scasd    eax, dword ptr es:[edi]
 0x00470b9e  test     al, 0xe1
 0x00470ba0  loopne   0x470be8
 0x00470ba2  dec      esp
 0x00470ba3  push     eax
+0x00470ba8  not      byte ptr [0x586f294c]
+0x00470bae  jnp      0x470bd9
+0x00470bb0  sal      byte ptr [esi - 0x17], cl
+0x00470bb3  inc      edi
+0x00470bb4  sti      
+0x00470bf0  pop      edi
 0x00470bf1  loop     0x470b8a
 0x00470bf3  xor      dword ptr [edi], ebp
 0x00470bf5  xor      dword ptr [edi], 0xffffffd2
@@ -3061,9 +4448,12 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047110a  neg      byte ptr [eax - 0x51]
 0x0047110d  cmpsd    dword ptr [esi], dword ptr es:[edi]
 0x0047110e  sbb      dword ptr [ebx - 0x78], ebx
+0x0047110f  pop      esp
+0x00471110  arpl     word ptr [eax + 0x4487ebf5], cx
 0x00471112  cmc      
 0x00471113  jmp      0x47109c
 0x00471114  xchg     dword ptr [esp + 0x28], eax
+0x00471116  and      al, 0x28
 0x00471118  pushfd   
 0x00471119  push     dword ptr [esp + 0x2c]
 0x0047111c  sub      al, 0xc2
@@ -3378,6 +4768,27 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047150c  scasd    eax, dword ptr es:[edi]
 0x0047150d  cmp      byte ptr [eax], cl
 0x0047150f  outsd    dx, dword ptr [esi]
+0x00471553  jl       0x47150f
+0x00471555  pop      ecx
+0x00471556  pop      esi
+0x00471557  sub      dword ptr [0xbd58cf9], esi
+0x0047155d  adc      byte ptr [ecx - 0x4522c6d9], 0xdd
+0x00471564  fild     dword ptr [ebx + 0xa]
+0x00471567  mov      bh, 0xfa
+0x00471569  jo       0x47157a
+0x0047156b  lea      ebp, [eax - 0x3b]
+0x0047156e  nop      
+0x0047156f  pop      es
+0x00471570  jne      0x471586
+0x00471572  cmp      eax, 0x31e585d5
+0x00471577  push     0x87bdfa20
+0x0047157a  mov      ebp, 0x4ed70c87
+0x0047157c  or       al, 0xd7
+0x0047157e  dec      esi
+0x0047157f  mov      esp, 0x21d5785b
+0x00471584  sub      byte ptr [eax], 0xfb
+0x00471586  sti      
+0x00471587  pop      ecx
 0x00471592  xchg     ebp, eax
 0x00471593  mov      esi, 0x938ae932
 0x00471598  cmp      dword ptr [edi], ebx
@@ -3416,10 +4827,43 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047160f  jge      0x4715e5
 0x00471611  into     
 0x00471612  jmp      0x7c566b6b
+0x0047165d  adc      byte ptr [eax + eax - 0x828deb2], ch
+0x00471664  rol      byte ptr [edx + 0xb], cl
+0x00471667  mov      ch, 0x77
+0x00471669  sub      al, byte ptr [ebx + esi*2 + 0x348662dc]
 0x00471670  std      
 0x00471671  add      al, 0x11
 0x00471673  mov      byte ptr [edx], dh
 0x00471676  imul     esi, dword ptr ss:[edx - 0x5c99a0c4], 0x6958f1e4
+0x004716a4  xchg     dword ptr [ebp - 0x20], esp
+0x004716a7  dec      edi
+0x004716a8  adc      ecx, dword ptr [eax + 0x2b]
+0x004716ab  xchg     ecx, eax
+0x004716ac  cmp      al, 0x37
+0x004716ae  popfd    
+0x004716af  push     ecx
+0x004716b0  cmp      dword ptr [ecx], ecx
+0x004716b1  or       esi, edi
+0x004716b3  push     0xa5761280
+0x004716b4  adc      byte ptr [edx], 0x76
+0x004716b5  adc      dh, byte ptr [esi - 0x5b]
+0x004716b6  jbe      0x47165d
+0x004716b7  movsd    dword ptr es:[edi], dword ptr [esi]
+0x004716b8  xchg     dword ptr [ebp*8 - 0x5eb9e618], ebp
+0x004716b9  sub      al, 0xed
+0x004716ba  in       eax, dx
+0x004716bb  call     0xafe85cd9
+0x004716bc  sbb      dword ptr [esi - 0x5f], eax
+0x004716bd  inc      esi
+0x004716be  mov      eax, dword ptr [0xaf170daf]
+0x004716bf  scasd    eax, dword ptr es:[edi]
+0x004716c0  or       eax, 0xdf7baf17
+0x004716c1  pop      ss
+0x004716c2  scasd    eax, dword ptr es:[edi]
+0x004716c3  jnp      0x4716a4
+0x004716c4  fild     word ptr [edi]
+0x004716c5  pop      es
+0x004716c6  xchg     ecx, eax
 0x004716c7  call     0x4771f7
 0x004716cc  call     0x473c5c
 0x004716d1  push     0xc4f80a43
@@ -4325,7 +5769,10 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x004722ac  jno      0x4722a5
 0x004722ae  lodsb    al, byte ptr [esi]
 0x004722af  cmp      cl, byte ptr [ecx + 0x7e]
+0x004722b0  dec      ecx
+0x004722b1  jle      0x47223d
 0x004722b2  mov      ah, byte ptr [0x66d25348]
+0x004722b3  and      eax, 0x66d25348
 0x004722b8  leave    
 0x004722b9  adc      ch, byte ptr [edx]
 0x004722bb  and      eax, 0xdb930075
@@ -4617,10 +6064,16 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00472901  nop      
 0x00472902  retf     0xc10b
 0x0047290a  psubsb   mm3, qword ptr [edx - 0x3b6c6489]
+0x0047290e  wait     
+0x0047290f  xchg     ebx, eax
+0x00472910  les      esi, ptr [edi - 0x5c]
 0x00472911  ja       0x4728b7
 0x00472913  pop      edx
 0x00472914  test     byte ptr [ecx + 0x72], bl
+0x00472915  pop      ecx
+0x00472916  jb       0x472949
 0x00472917  xor      ebp, ebp
+0x00472918  in       eax, dx
 0x00472919  fiadd    word ptr [edx]
 0x0047291b  push     ebx
 0x0047291c  jp       0x4728a0
@@ -4628,13 +6081,40 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00472923  mov      esi, 0x56afc6d0
 0x00472928  mov      eax, 0xcead3879
 0x0047292d  mov      bh, 0x79
+0x0047292f  jns      0x47290e
+0x00472931  sub      dh, byte ptr [ecx - 0x4b7532e0]
+0x00472932  mov      cl, 0x20
+0x00472933  and      ch, cl
+0x00472934  int      0x8a
+0x00472935  mov      dh, byte ptr [esi + ebp + 0xaba459]
+0x00472936  mov      ah, 0x2e
+0x00472937  pop      ecx
+0x00472938  pop      ecx
+0x00472939  movsb    byte ptr es:[edi], byte ptr [esi]
+0x0047293a  stosd    dword ptr es:[edi], eax
+0x0047293b  add      byte ptr [0xcf839d5c], dl
+0x0047293c  adc      eax, 0xcf839d5c
+0x0047293d  pop      esp
+0x0047293e  popfd    
+0x0047293f  or       edi, 0xffffffe8
+0x00472940  iretd    
 0x00472941  call     0x47a6e2
+0x00472942  pushfd   
+0x00472943  jge      0x472945
+0x00472945  add      byte ptr [edi + 0x66982404], al
 0x00472946  xchg     dword ptr [esp], eax
 0x00472949  cwde     
 0x0047294a  mov      ax, 0x4265
+0x0047294b  mov      eax, 0xf664265
 0x0047294e  bswap    ax
+0x00472950  enter    0x7ca1, -0x3f
 0x00472951  mov      eax, dword ptr [0x45c17c]
+0x00472954  inc      ebp
+0x00472955  add      al, ch
 0x00472956  call     0x477cae
+0x00472957  push     ebx
+0x00472958  push     ebx
+0x00472959  add      byte ptr [eax], al
 0x0047295b  mov      dword ptr [esp + 0x28], eax
 0x0047295f  pop      eax
 0x00472960  mov      eax, dword ptr [0x45c3c0]
@@ -4778,7 +6258,17 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00472b22  sal      dword ptr [edi - 0x5d324c4c], 0x9f
 0x00472b29  stosb    byte ptr es:[edi], al
 0x00472b2a  pop      ebx
+0x00472b2d  sbb      esi, edi
+0x00472b2f  mov      cl, 0x46
+0x00472b30  inc      esi
+0x00472b31  wait     
+0x00472b32  aaa      
+0x00472b33  fimul    word ptr [ecx + 0xcf667c4]
+0x00472b34  mov      esp, eax
+0x00472b35  les      esp, ptr [edi - 0xa]
 0x00472b36  test     byte ptr [si], -0x36
+0x00472b38  or       al, 0xca
+0x00472b39  retf     0x6c91
 0x00472b3a  xchg     ecx, eax
 0x00472b3b  insb     byte ptr es:[edi], dx
 0x00472b3c  pop      ss
@@ -4798,7 +6288,10 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00472b68  cmp      bh, byte ptr [edx + 0x34]
 0x00472b75  push     ss
 0x00472b76  pop      esp
+0x00472b7f  mov      esp, 0x360c79e7
+0x00472b80  out      0x79, eax
 0x00472b81  jns      0x472b8f
+0x00472b82  or       al, 0x36
 0x00472b83  inc      ebx
 0x00472b84  inc      ebx
 0x00472b85  sbb      bl, cl
@@ -5232,6 +6725,16 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x004730ea  sbb      byte ptr [eax + 0x791b075], ah
 0x004730f0  imul     ebx, dword ptr [eax + ebp*8 + 0x33], 0x4c2dda4a
 0x004730f8  ret      0xc94c
+0x0047310a  xchg     edx, eax
+0x0047310b  dec      byte ptr [edi - 0x52717f90]
+0x00473111  mov      dword ptr [edi + 0x15a9114d], edx
+0x00473117  jnp      0x4730e5
+0x00473119  sbb      eax, esp
+0x0047311b  test     eax, 0xff6e44a
+0x0047311e  test     byte ptr [edi], -0x43
+0x00473120  mov      ebp, 0x624d59e3
+0x00473121  jecxz    0x47317c
+0x00473123  dec      ebp
 0x00473150  cli      
 0x00473151  pop      edi
 0x00473152  aam      0x2a
@@ -5240,7 +6743,18 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047315b  out      0x53, al
 0x0047315d  mov      bh, 6
 0x0047315f  mov      dword ptr [ecx], eax
+0x00473160  add      dword ptr [esi + 0x7af8a98f], ebx
 0x00473161  sahf     
+0x00473163  test     eax, 0x89917af8
+0x00473164  clc      
+0x00473165  jp       0x4730f8
+0x00473166  xchg     ecx, eax
+0x00473167  mov      dword ptr [edi], eax
+0x00473168  pop      es
+0x00473169  cmp      dl, byte ptr [ebx + 0x7e]
+0x0047316a  push     ebx
+0x0047316b  jle      0x4731e7
+0x0047316c  jp       0x47310a
 0x0047316d  pushfd   
 0x0047316e  mov      byte ptr [esp + 4], 0x55
 0x00473173  xchg     dword ptr [esp + 0xc], eax
@@ -5273,7 +6787,9 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x004731da  jmp      0x4777a0
 0x004731df  lea      esp, [esp + 0x24]
 0x004731e3  call     0x475cea
+0x004731e7  add      al, ch
 0x004731e8  call     0x4731af
+0x004731e9  ret      0xffff
 0x004731ed  pushfd   
 0x004731ee  push     dword ptr [esp]
 0x004731f1  mov      dword ptr [esp + 8], eax
@@ -5541,6 +7057,27 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00473552  clc      
 0x00473553  lodsd    eax, dword ptr [esi]
 0x00473554  cmp      ecx, edx
+0x0047355e  jb       0x47354a
+0x00473560  sbb      edi, eax
+0x00473562  and      edx, esi
+0x00473564  push     ebx
+0x00473565  out      dx, al
+0x00473566  lahf     
+0x00473567  test     byte ptr [eax - 0x44], bh
+0x0047356a  or       dword ptr [edi], edx
+0x0047356c  add      cl, byte ptr [ebx]
+0x0047356e  scasd    eax, dword ptr es:[edi]
+0x0047356f  xchg     esp, eax
+0x00473570  inc      esp
+0x00473571  push     edx
+0x00473573  loope    0x473591
+0x00473575  cpuid    
+0x00473577  xlatb    
+0x00473578  lcall    0xe63, 0xbcdfb3df
+0x0047357f  dec      ebx
+0x00473580  sub      dword ptr [ebx - 0x3861462d], 0x4ecb9dcd
+0x0047358a  xor      ch, byte ptr [edx - 0x4f982b5b]
+0x00473590  int1     
 0x004735b6  outsb    dx, byte ptr [esi]
 0x004735b7  sbb      ecx, dword ptr [esi]
 0x004735b9  movsd    dword ptr es:[edi], dword ptr [esi]
@@ -5886,6 +7423,7 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00473b59  inc      esi
 0x00473b5a  ljmp     0x1604:0x75139cb5
 0x00473b61  fsub     qword ptr fs:[ebp - 0x1d]
+0x00473b64  jecxz    0x473bc2
 0x00473b65  pop      esp
 0x00473b66  jecxz    0x473aeb
 0x00473b68  mov      bh, byte ptr [edx + ecx*8 - 0x6086f988]
@@ -5921,32 +7459,58 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00473bbc  dec      edi
 0x00473bbd  jl       0x473c11
 0x00473bbf  shl      byte ptr [esi], 1
+0x00473bc0  mov      al, 0xe
 0x00473bc1  mov      al, 0xe
+0x00473bc2  push     cs
 0x00473bc3  popfd    
 0x00473bc4  inc      dword ptr [ebp + 0x24ca84b3]
+0x00473bc5  test     dword ptr [ebx - 0x60db357c], esi
+0x00473bc7  test     dl, cl
+0x00473bc9  and      al, 0x9f
 0x00473bca  lahf     
 0x00473bcb  scasb    al, byte ptr es:[edi]
 0x00473bcc  xchg     ebp, eax
 0x00473bcd  mov      dl, 0x63
+0x00473bce  arpl     word ptr [ecx + 0x3722927d], cx
 0x00473bcf  mov      dword ptr [ebp - 0x6e], edi
+0x00473bd0  jge      0x473b64
+0x00473bd1  xchg     edx, eax
 0x00473bd2  and      dh, byte ptr [edi]
+0x00473bd3  aaa      
 0x00473bd4  xor      al, bl
+0x00473bd5  fdivr    dword ptr [ecx]
 0x00473bd6  cmp      dword ptr [eax - 0x46], ebx
+0x00473bd7  pop      eax
+0x00473bd8  mov      edx, 0x61883e3d
 0x00473bd9  cmp      eax, 0xa61883e
+0x00473bda  mov      byte ptr ds:[ecx + 0xa], ah
+0x00473bdb  mov      byte ptr [ecx + 0xa], ah
+0x00473bdc  popal    
+0x00473bdd  or       dh, bh
 0x00473bde  not      dword ptr [edi + 0x28ba1b82]
+0x00473bdf  xchg     edi, eax
+0x00473be0  sbb      byte ptr [ebx], 0xba
+0x00473be1  sbb      edi, dword ptr [edx + 0x79546e28]
+0x00473be2  mov      edx, 0x79546e28
+0x00473be3  sub      byte ptr [esi + 0x54], ch
 0x00473be4  outsb    dx, byte ptr [esi]
 0x00473be5  push     esp
 0x00473be6  jns      0x473bb1
+0x00473be7  leave    
 0x00473be8  stc      
 0x00473be9  int3     
+0x00473bea  int3     
 0x00473beb  xor      al, 0x59
+0x00473bec  pop      ecx
 0x00473bed  fadd     st(3)
 0x00473bef  push     ss
 0x00473bf0  push     ebp
 0x00473bf1  jle      0x473b77
 0x00473bf2  test     byte ptr [ecx + 0x2404c602], dh
 0x00473bf3  mov      cl, 2
+0x00473bf4  add      al, dh
 0x00473bf5  mov      byte ptr [esp], 0x5e
+0x00473bf6  add      al, 0x24
 0x00473bf8  pop      esi
 0x00473bf9  lea      esp, [esp + 0x48]
 0x00473bfd  call     0x475cea
@@ -6766,8 +8330,15 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00474681  mov      byte ptr [esp + 4], 0x6e
 0x00474686  push     dword ptr [esp + 8]
 0x0047468a  ret      0xc
+0x0047468d  call     0x476973
+0x0047468e  loope    0x4746b2
+0x0047468f  and      al, byte ptr [eax]
+0x00474690  add      byte ptr [eax], al
+0x00474691  add      byte ptr [ebx - 0x78], dl
 0x00474692  push     ebx
 0x00474693  mov      byte ptr [esp + 4], ch
+0x00474694  insb     byte ptr es:[edi], dx
+0x00474695  and      al, 4
 0x00474697  xchg     dword ptr [esp + 0x20], eax
 0x0047469b  lahf     
 0x0047469c  call     0x474243
@@ -7088,17 +8659,55 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00474ab0  pushfd   
 0x00474ab1  push     dword ptr [esp + 0xc]
 0x00474ab5  ret      0x10
+0x00474ac2  pop      ds
+0x00474ac3  xor      al, 0x16
+0x00474ac4  push     ss
+0x00474ac5  in       eax, 0x11
+0x00474ac6  adc      dword ptr [esi + ebp - 0x68], edi
+0x00474ac7  jl       0x474af7
+0x00474ac8  cwde     
+0x00474ac9  cwde     
+0x00474aca  sub      eax, edi
+0x00474acb  clc      
+0x00474acc  movsb    byte ptr es:[edi], byte ptr [esi]
+0x00474acd  out      0x12, eax
+0x00474ace  adc      al, byte ptr [eax + 0x1a7f0ba0]
+0x00474acf  add      al, 5
+0x00474ad0  add      eax, 0x1a7f0ba0
+0x00474ad1  mov      al, byte ptr [0xd51a7f0b]
+0x00474ad2  or       edi, dword ptr [edi + 0x1a]
+0x00474ad3  jg       0x474aef
+0x00474ad4  sbb      dl, ch
+0x00474ad5  aad      0x10
+0x00474ad6  adc      byte ptr [edx], dl
+0x00474ad7  adc      cl, byte ptr [edx - 0x21]
+0x00474ad8  dec      edx
+0x00474ad9  fist     word ptr [edx - 0xa]
 0x00474ada  push     edx
 0x00474adb  not      bh
+0x00474adc  xlatb    
 0x00474add  jae      0x474b20
+0x00474ade  inc      ecx
 0x00474adf  add      dh, byte ptr [ecx + 0x156fa000]
+0x00474ae0  mov      cl, 0
+0x00474ae1  add      byte ptr [eax + 0x38c0156f], ah
+0x00474ae2  mov      al, byte ptr [0x38c0156f]
+0x00474ae3  outsd    dx, dword ptr [esi]
+0x00474ae4  adc      eax, 0x39f638c0
 0x00474ae5  sar      byte ptr [eax], 0xf6
+0x00474ae6  cmp      dh, dh
+0x00474ae7  idiv     byte ptr [ecx]
 0x00474ae8  cmp      dword ptr [0x870b0b27], esi
+0x00474ae9  xor      eax, 0x870b0b27
+0x00474aec  or       eax, dword ptr [edi - 0x6a944854]
 0x00474aee  lodsb    al, byte ptr [esi]
 0x00474aef  mov      bh, 0x6b
+0x00474af0  imul     edx, dword ptr [ebp + 0x1b3d115], -0x80
 0x00474af1  xchg     ebp, eax
 0x00474af2  adc      eax, 0x8001b3d1
+0x00474af3  sal      dword ptr [ebx + 0x517c8001], 1
 0x00474af7  jl       0x474b4a
+0x00474af8  push     ecx
 0x00474af9  jbe      0x474aa6
 0x00474afa  stosd    dword ptr es:[edi], eax
 0x00474afb  add      dh, 0x7e
@@ -7465,24 +9074,69 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047500b  dec      eax
 0x0047500c  dec      ebp
 0x0047500d  jmp      ptr [edx + 0x78e984d7]
+0x004750cc  adc      byte ptr [ecx], 0x18
+0x004750cf  cmp      esp, ebx
+0x004750d1  xchg     ebx, eax
+0x004750d2  outsd    dx, dword ptr [esi]
+0x004750d3  lodsd    eax, dword ptr [esi]
+0x004750d5  jno      0x4750cc
+0x004750d6  cmc      
+0x004750d7  ljmp     0xacd0:0xd935f8f7
+0x004750d8  idiv     eax
+0x004750d9  clc      
+0x004750da  xor      eax, 0xf1acd0d9
+0x004750db  fnop     
+0x004750dc  shr      byte ptr [ecx + esi*8 - 0x720353d8], 1
+0x004750dd  lodsb    al, byte ptr [esi]
+0x004750de  int1     
+0x004750df  sub      byte ptr [esp + edi*8 - 0x7d049b73], ch
+0x004750e0  lodsb    al, byte ptr [esi]
+0x004750e1  cld      
+0x004750e2  lea      esp, [ebx + edi*8 - 0x7e]
+0x004750e3  sti      
+0x004750e4  sti      
+0x004750e5  adc      bh, 0x53
+0x004750e6  xlatb    
+0x004750e7  push     ebx
 0x004750e8  jl       0x4750f0
+0x004750e9  push     es
 0x004750ea  push     es
 0x004750eb  inc      esp
 0x004750ec  push     ecx
+0x004750ed  push     ecx
 0x004750ee  xor      dword ptr [ebx], eax
+0x004750ef  xor      dword ptr [ebx], eax
 0x004750f0  add      ecx, eax
 0x004750f1  enter    -0x705d, 0x70
 0x004750f2  mov      dword ptr [0x1703708f], eax
+0x004750f4  jo       0x4750f9
 0x004750f5  add      edx, dword ptr [edi]
+0x004750f6  pop      ss
 0x004750f7  into     
 0x004750f8  or       eax, 0x54f4b3fd
+0x004750f9  or       eax, 0x54f4b3fd
+0x004750fa  std      
+0x004750fb  mov      bl, 0xf4
+0x004750fc  hlt      
+0x004750fd  push     esp
 0x004750fe  mov      ch, 0xe4
+0x004750ff  in       al, 0xed
 0x00475100  in       eax, dx
 0x00475101  arpl     word ptr [esi - 0x2d], bp
+0x00475102  arpl     word ptr [esi - 0x2d], bp
+0x00475103  outsb    dx, byte ptr [esi]
+0x00475104  rcr      esp, cl
 0x00475105  fsub     qword ptr [ecx]
+0x00475106  and      dword ptr [edi - 0x18], edx
 0x00475107  push     edi
 0x00475108  call     0x475b6d
+0x00475109  pushal   
+0x0047510a  or       al, byte ptr [eax]
+0x0047510c  add      cl, ch
 0x0047510d  jmp      0x47910b
+0x0047510e  stc      
+0x0047510f  aas      
+0x00475110  add      byte ptr [eax], al
 0x00475112  push     dword ptr [esp]
 0x00475115  lea      esp, [esp + 0x2c]
 0x00475119  call     0x475cea
@@ -7576,6 +9230,70 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00475247  pop      esi
 0x00475248  sub      ebp, dword ptr [esi + 0x12c26f89]
 0x0047524e  wait     
+0x00475250  cmc      
+0x00475251  mov      al, 0x4b
+0x00475252  dec      ebx
+0x00475253  push     esp
+0x00475254  cdq      
+0x00475255  salc     
+0x00475256  enter    0x498d, -0x14
+0x00475257  lea      ecx, [ecx - 0x14]
+0x00475258  dec      ecx
+0x00475259  in       al, dx
+0x0047525a  stosb    byte ptr es:[edi], al
+0x0047525b  stosb    byte ptr es:[edi], al
+0x0047525c  mov      al, 0x63
+0x0047525d  arpl     word ptr [ebp + 0x142074d9], si
+0x0047525e  xor      al, 0x2d
+0x0047525f  sub      eax, 0x142074d9
+0x00475260  fnstenv  [eax + 0x14]
+0x00475261  je       0x475283
+0x00475262  and      byte ptr [eax + edx*2], dl
+0x00475263  adc      al, 0x50
+0x00475264  push     eax
+0x00475265  push     esp
+0x00475266  arpl     word ptr [edi], dx
+0x00475267  pop      ss
+0x00475268  jp       0x47523b
+0x00475269  rcl      dword ptr [eax]
+0x0047526a  adc      byte ptr [ebp + ecx*8 - 0x29cb2ed], al
+0x0047526b  test     ch, cl
+0x0047526c  int      0x13
+0x0047526d  adc      ecx, dword ptr [ebp + 0x63]
+0x0047526e  dec      ebp
+0x0047526f  arpl     bp, di
+0x00475270  std      
+0x00475271  cmc      
+0x00475272  xor      ebp, 0xab4b3e8a
+0x00475273  cmc      
+0x00475274  mov      bh, byte ptr [esi]
+0x00475275  dec      ebx
+0x00475276  dec      ebx
+0x00475277  stosd    dword ptr es:[edi], eax
+0x00475278  jp       0x4751ff
+0x0047527a  add      ch, byte ptr [0x4f3a9bef]
+0x00475280  aaa      
+0x00475281  lcall    0x291e, 0x84fa1eca
+0x00475283  push     ds
+0x00475284  cli      
+0x00475285  test     byte ptr [esi], bl
+0x00475287  sub      dword ptr [esi + 0x4f], esp
+0x00475288  dec      di
+0x0047528a  les      ecx, ptr [ecx]
+0x0047528c  lds      esp, ptr [eax + 6]
+0x0047528f  push     0x104554a2
+0x00475294  push     edi
+0x00475295  jae      0x4752e7
+0x00475297  fstp     xword ptr [ebx - 0x1de0deb0]
+0x0047529d  lodsd    eax, dword ptr [esi]
+0x0047529e  sub      bh, ch
+0x004752a0  or       al, 0x3e
+0x004752a2  aas      
+0x004752a3  in       al, dx
+0x004752a4  movnti   dword ptr [esi + 0xa], ebx
+0x004752a8  cld      
+0x004752a9  mov      eax, dword ptr [0xe7a475f2]
+0x004752ae  pop      ss
 0x004752af  in       al, 0x91
 0x004752b1  mov      ebx, 0x4f998180
 0x004752b6  sub      edi, dword ptr [ecx + 0x34]
@@ -7759,6 +9477,21 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047558e  loop     0x475520
 0x00475590  xchg     edx, eax
 0x00475591  scasb    al, byte ptr es:[edi]
+0x0047592d  jne      0x475989
+0x0047592f  add      ebx, edx
+0x00475931  out      0x7a, ax
+0x00475934  mov      edx, 0x65570374
+0x00475939  in       eax, dx
+0x0047593a  mov      al, byte ptr [0xd91fb23b]
+0x0047593f  leave    
+0x00475940  push     eax
+0x00475941  push     edi
+0x00475942  sub      ebx, dword ptr [edx]
+0x00475944  pop      gs
+0x00475946  insb     byte ptr es:[edi], dx
+0x00475947  xchg     edx, eax
+0x00475948  xor      dword ptr [esp + ebx*4 + 0x15], edx
+0x0047596d  mov      ecx, ds
 0x0047596f  jmp      0x474156
 0x00475974  call     0x47089b
 0x00475979  pushal   
@@ -7943,6 +9676,9 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00475bdd  cmp      ch, byte ptr [eax]
 0x00475bdf  push     ss
 0x00475be0  cmp      al, 0x3d
+0x00475be3  shl      dl, 0xbf
+0x00475be4  loop     0x475ba5
+0x00475be5  mov      edi, 0x4244489
 0x00475be6  mov      dword ptr [esp + 4], eax
 0x00475bea  pop      eax
 0x00475beb  pushal   
@@ -9079,6 +10815,11 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00476d54  in       eax, 0xf9
 0x00476d56  cwde     
 0x00476d57  pop      ebp
+0x00476d8b  call     0x47b692
+0x00476d8f  out      dx, al
+0x00476d90  sal      dword ptr [eax - 0x1b34699f], 1
+0x00476d96  pop      es
+0x00476d97  fcmovb   st(0), st(4)
 0x00476e26  xchg     ebx, eax
 0x00476e27  xor      ebx, dword ptr [edi - 0x2e504df3]
 0x00476e2d  lodsb    al, byte ptr [esi]
@@ -9189,10 +10930,61 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x004770fd  xchg     edx, eax
 0x004770fe  iretd    
 0x00477100  jmp      0x3a6d3551
+0x004771bb  dec      esi
+0x004771bc  loope    0x477205
+0x004771be  sar      dword ptr [esi - 0x5c], 1
+0x004771c1  dec      ecx
+0x004771c2  pop      esi
+0x004771c3  cli      
+0x004771c4  movsd    dword ptr es:[edi], dword ptr [esi]
+0x004771c5  cmp      ah, al
+0x004771c6  loopne   0x477175
+0x004771c7  lodsd    eax, dword ptr [esi]
+0x004771c8  and      cl, byte ptr [eax]
+0x004771c9  or       byte ptr [edx + 0xf4921ad], cl
+0x004771ca  mov      ch, byte ptr [ebp - 0x64f0b6df]
+0x004771cb  lodsd    eax, dword ptr [esi]
+0x004771cc  and      dword ptr [ecx + 0xf], ecx
+0x004771cd  dec      ecx
+0x004771ce  setnp    byte ptr [eax + 0x79]
+0x004771cf  wait     
+0x004771d0  js       0x47724b
+0x004771d1  jns      0x477250
+0x004771d2  jge      0x4771dc
+0x004771d3  or       ch, cl
+0x004771d4  int      0x8d
+0x004771d5  lea      edx, [ebx - 0x1aed0e4f]
+0x004771d6  xchg     ebx, eax
+0x004771d7  mov      cl, 0xf1
+0x004771d8  int1     
+0x004771d9  adc      ah, ch
+0x004771da  in       eax, 0xc6
+0x004771db  mov      byte ptr [eax - 0x64], 0x59
+0x004771dc  inc      eax
+0x004771dd  pushfd   
+0x004771de  pop      ecx
+0x004771df  sahf     
+0x004771e0  in       eax, 0xd8
+0x004771e1  fsubr    dword ptr [ecx]
+0x004771e2  sub      dword ptr [ebx], esp
+0x004771e3  and      ebp, dword ptr [ecx - 0x60c71f67]
+0x004771e4  test     eax, 0x9f38e099
+0x004771e5  cdq      
+0x004771e6  loopne   0x477220
+0x004771e7  cmp      byte ptr [edi + 0x63cfe39c], bl
+0x004771e8  lahf     
+0x004771e9  pushfd   
+0x004771ea  jecxz    0x4771bb
+0x004771eb  iretd    
+0x004771ec  arpl     word ptr [eax - 1], sp
 0x004771ed  pushal   
 0x004771ee  push     dword ptr [esp + 8]
+0x004771ef  je       0x477215
+0x004771f1  or       al, ch
 0x004771f2  call     0x471114
+0x004771f3  sbb      eax, 0x89ffff9f
 0x004771f7  mov      dword ptr [esp], eax
+0x004771f8  add      al, 0x24
 0x004771fa  mov      ax, 0xae42
 0x004771fe  mov      eax, dword ptr [0x45c6c4]
 0x00477203  push     0x744a955a
@@ -9200,6 +10992,7 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00477209  lea      esp, [esp + 0x24]
 0x0047720d  call     0x475cea
 0x00477212  jmp      0x479254
+0x00477215  add      byte ptr [eax], al
 0x00477217  pushal   
 0x00477218  call     0x47a7b2
 0x0047721d  jmp      0x471792
@@ -9217,10 +11010,16 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00477244  pushal   
 0x00477245  xchg     dword ptr [esp + 0x1c], eax
 0x00477249  setne    ah
+0x0047724b  les      ebx, ptr [eax - 0x5f]
 0x0047724c  pop      eax
 0x0047724d  mov      eax, dword ptr [0x45c748]
+0x0047724e  dec      eax
+0x0047724f  mov      dword ptr [ebp], 0x3ff6e99c
+0x00477250  inc      ebp
+0x00477251  add      byte ptr [ecx + ebp*8 + 0x3ff6], bl
 0x00477252  pushfd   
 0x00477253  jmp      0x47b24e
+0x00477256  add      byte ptr [eax], al
 0x00477258  call     0x475acf
 0x0047725d  pushfd   
 0x0047725e  mov      byte ptr [esp], bl
@@ -9443,7 +11242,23 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00477561  push     dword ptr [esp + 4]
 0x00477565  push     dword ptr [esp + 0x30]
 0x00477569  ret      0x34
+0x0047756c  and      edx, dword ptr [ebp - 0x34]
+0x0047756d  push     ebp
+0x0047756e  int3     
+0x0047756f  pop      ecx
+0x00477570  dec      ebp
+0x00477571  or       al, 0x7e
+0x00477572  jle      0x477514
+0x00477573  mov      al, byte ptr [0x227cd508]
+0x00477574  or       ch, dl
+0x00477575  aad      0x7c
+0x00477576  jl       0x47759a
+0x00477577  and      cl, byte ptr [edx - 0x26219711]
+0x00477578  mov      ch, bh
+0x00477579  out      dx, eax
 0x0047757a  push     0x595ed9de
+0x0047757d  pop      esi
+0x0047757e  pop      ecx
 0x0047757f  push     esi
 0x00477580  mov      byte ptr [esp], ch
 0x00477583  jmp      0x479233
@@ -9452,6 +11267,7 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00477591  call     0x471c9e
 0x00477596  pushal   
 0x00477597  lea      esp, [esp + 0x44]
+0x0047759a  inc      esp
 0x0047759b  call     0x475cea
 0x004775a0  jmp      0x4787e5
 0x004775a5  push     ebx
@@ -9462,8 +11278,15 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x004775ac  xor      ebp, 0xe1418d52
 0x004775b2  cmp      dh, 0x98
 0x004775b5  xor      ecx, 0xbd535043
+0x004775bb  test     di, di
+0x004775bc  test     edi, edi
+0x004775be  call     0x4732ed
+0x004775bf  sub      bh, byte ptr [ebp - 0x779f0001]
+0x004775c0  mov      ebp, 0x8860ffff
 0x004775c3  pushal   
 0x004775c4  mov      byte ptr [esp + 8], dl
+0x004775c5  push     esp
+0x004775c6  and      al, 8
 0x004775c8  mov      dword ptr [esp + 0x1c], eax
 0x004775cc  push     ebx
 0x004775cd  pushfd   
@@ -9908,7 +11731,105 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00477b83  out      0x44, al
 0x00477b85  cmp      eax, 0x2e3a9695
 0x00477b8a  mov      eax, 0x76dcc652
+0x00477bd0  xor      dl, al
+0x00477bd2  dec      ecx
+0x00477bd3  xchg     esp, eax
+0x00477bd4  frstor   dword ptr [eax + 0x449cf461]
+0x00477bda  cmc      
+0x00477bdb  adc      dword ptr [edx + 0x3cd36426], 0xc895ed7a
+0x00477bdc  xchg     edx, eax
+0x00477bdd  sar      dword ptr fs:[edx + edi*2], cl
+0x00477bde  sar      dword ptr fs:[edx + edi*2], cl
+0x00477bdf  sar      dword ptr [edx + edi*2], cl
+0x00477be0  cmp      al, 0x7a
+0x00477be1  jp       0x477bd0
+0x00477be2  in       eax, dx
+0x00477be3  xchg     ebp, eax
+0x00477be4  enter    -0x671a, -0x10
+0x00477be5  out      0x98, al
+0x00477be8  shr      dword ptr [edi + eax*8], cl
+0x00477be9  sub      al, 0xc7
+0x00477beb  mov      cl, bl
+0x00477bec  fxtract  
+0x00477bed  hlt      
+0x00477bee  and      eax, 0x5a4a460f
+0x00477bef  cmovbe   ecx, dword ptr [edx + 0x5a]
+0x00477bf0  inc      esi
+0x00477bf1  dec      edx
+0x00477bf2  pop      edx
+0x00477bf3  sbb      eax, 0xeacec0b1
+0x00477bf4  mov      cl, 0xc0
+0x00477bf5  ror      dh, 0xea
+0x00477bf6  into     
+0x00477bf7  ljmp     0x4edb:0x634b2bcd
+0x00477bf8  int      0x2b
+0x00477bf9  sub      ecx, dword ptr [ebx + 0x63]
+0x00477bfa  dec      ebx
+0x00477bfb  arpl     bx, bx
+0x00477bfc  fisttp   dword ptr [esi + 0x2f]
+0x00477bfd  dec      esi
+0x00477bfe  das      
+0x00477bff  iretd    
+0x00477c00  lodsd    eax, dword ptr ss:[esi]
+0x00477c01  lodsd    eax, dword ptr [esi]
+0x00477c02  sbb      ecx, dword ptr [edx + 0x663e47b0]
+0x00477c03  mov      dh, byte ptr [eax + 0x35663e47]
+0x00477c04  mov      al, 0x47
+0x00477c05  inc      edi
+0x00477c06  xor      ax, 0x88b9
+0x00477c07  xor      ax, 0x88b9
+0x00477c08  xor      eax, 0x4f9088b9
+0x00477c09  mov      ecx, 0x7e4f9088
+0x00477c0a  mov      byte ptr [eax - 0x38d81b1], dl
+0x00477c0b  nop      
+0x00477c0c  dec      edi
+0x00477c0d  jle      0x477c81
+0x00477c0e  jb       0x477c0c
+0x00477c0f  cld      
+0x00477c10  scasd    eax, dword ptr es:[edi]
+0x00477c11  aaa      
+0x00477c12  leave    
+0x00477c13  mov      cl, 0x48
+0x00477c14  dec      eax
+0x00477c15  dec      ebx
+0x00477c16  imul     ebx, dword ptr [ebp + 0x72], 0xe5b2b802
+0x00477c17  pop      ebp
+0x00477c18  jb       0x477c1c
+0x00477c19  add      bh, byte ptr [eax - 0x127c1a4e]
+0x00477c1a  mov      eax, 0xed83e5b2
+0x00477c1b  mov      dl, 0xe5
+0x00477c1c  in       eax, 0x83
+0x00477c1d  sub      ebp, -0x3b
+0x00477c1e  in       eax, dx
+0x00477c1f  lds      edx, ptr [edx + 0x14e219f]
+0x00477c20  xchg     edx, eax
+0x00477c21  lahf     
+0x00477c22  and      dword ptr [esi + 1], ecx
+0x00477c23  dec      esi
+0x00477c24  add      dword ptr [esi - 0x2f], eax
+0x00477c25  inc      esi
+0x00477c26  shl      edx, 1
+0x00477c27  loop     0x477c89
+0x00477c28  pushal   
+0x00477c29  out      0x50, eax
+0x00477c2a  push     eax
+0x00477c2b  loopne   0x477bd0
+0x00477c2c  mov      dword ptr [0x85640002], eax
+0x00477c2d  add      al, byte ptr [eax]
+0x00477c2e  add      byte ptr [ebp + eax*4 - 0x3c], ah
+0x00477c2f  test     esp, eax
+0x00477c30  test     esp, eax
+0x00477c31  les      ebx, ptr [ecx]
+0x00477c32  sbb      dword ptr [ebp - 0x76], ecx
+0x00477c33  dec      esp
+0x00477c34  mov      ah, bl
+0x00477c35  mov      ah, bl
+0x00477c36  jecxz    0x477c08
+0x00477c37  shr      byte ptr [eax + 2], 1
 0x00477c38  push     0xcfab5d02
+0x00477c3a  pop      ebp
+0x00477c3b  stosd    dword ptr es:[edi], eax
+0x00477c3c  iretd    
 0x00477c3d  push     dword ptr [esp + 0x40]
 0x00477c41  popfd    
 0x00477c42  push     eax
@@ -10071,8 +11992,13 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00477e6d  mov      bh, 0x29
 0x00477e6f  mov      ebx, 0x8b1db301
 0x00477e74  sti      
+0x00477e76  int1     
+0x00477e77  int1     
+0x00477e78  adc      ah, byte ptr [eax - 0x79]
 0x00477e79  pushal   
 0x00477e7a  xchg     dword ptr [esp + 0x24], eax
+0x00477e7b  inc      esp
+0x00477e7c  and      al, 0x24
 0x00477e7e  pushal   
 0x00477e7f  pushfd   
 0x00477e80  push     dword ptr [esp + 4]
@@ -10503,6 +12429,16 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00478440  ret      0x34
 0x00478443  pushal   
 0x00478444  jmp      0x477383
+0x00478449  pushal   
+0x0047844a  pop      esp
+0x0047844b  adc      dword ptr [ebp - 0x1c3e523c], ecx
+0x0047844d  les      ebp, ptr [ebp - 0x6b331c3f]
+0x0047844e  lodsd    eax, dword ptr [esi]
+0x0047844f  shl      ebx, 0xcc
+0x00478450  jecxz    0x47841e
+0x00478451  int3     
+0x00478452  xchg     esp, eax
+0x00478453  cmp      eax, 0x824648d
 0x00478454  lea      esp, [esp + 8]
 0x00478458  call     0x475cea
 0x0047845d  pushfd   
@@ -10582,12 +12518,27 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00478551  pop      dword ptr [esp + 4]
 0x00478555  test     dl, 0x51
 0x00478558  push     0xfb962523
+0x00478559  and      esp, dword ptr [0xf381fb96]
+0x0047855a  and      eax, 0xf381fb96
+0x0047855b  xchg     esi, eax
+0x0047855c  sti      
 0x0047855d  xor      ebx, 0x465a4795
+0x0047855e  xchg     ebp, eax
+0x0047855f  xchg     ebp, eax
+0x00478560  inc      edi
+0x00478561  pop      edx
+0x00478562  inc      esi
 0x00478563  pushal   
 0x00478564  stc      
 0x00478565  xor      eax, 0x464ce02
+0x00478566  add      cl, dh
+0x00478567  into     
+0x00478568  add      al, 0xf5
+0x00478569  add      al, 0xf5
 0x0047856a  cmc      
 0x0047856b  call     0x47977a
+0x0047856c  or       dl, byte ptr [edx]
+0x0047856e  add      byte ptr [eax], al
 0x00478570  lea      esp, [esp + 0x2c]
 0x00478574  call     0x475cea
 0x00478579  push     edx
@@ -10798,6 +12749,7 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00478825  sbb      dword ptr [esi + 0x1a], ebx
 0x00478828  xchg     esi, eax
 0x00478829  imul     esi, dword ptr [edx + ecx*4 + 0x3891f681], -0x24
+0x0047882f  cmp      ah, bl
 0x00478831  mov      ebx, 0x4c647742
 0x00478836  jmp      0xdd58f6ed
 0x00478841  ljmp     0x6458:0x6f85291d
@@ -10808,12 +12760,30 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047884c  cmpsd    dword ptr [esi], dword ptr es:[edi]
 0x0047884d  and      ch, byte ptr [esi + edi*2 + 0x2a]
 0x0047884f  jle      0x47887b
+0x00478850  sub      dl, byte ptr [ebp - 0x78]
 0x00478851  push     ebp
 0x00478852  mov      byte ptr [edx - 0x17bdeed2], bl
+0x00478853  lcall    0x27bb, 0xe842112e
+0x00478856  inc      edx
+0x00478857  call     0x9b7bb017
 0x00478858  mov      ebx, 0x739b3427
+0x00478859  daa      
+0x0047885a  xor      al, 0x9b
+0x0047885b  wait     
+0x0047885c  jae      0x47881e
 0x0047885d  sal      byte ptr [edx + 0x57], 0xdb
+0x0047885e  jb       0x4788b7
 0x00478861  daa      
 0x00478862  xchg     byte ptr [ebx - 0x193015b9], dh
+0x00478866  iretd    
+0x00478867  out      0xdb, al
+0x00478869  jne      0x47880f
+0x0047886b  in       eax, dx
+0x0047886c  pop      ecx
+0x0047886d  call     0xefca7d16
+0x00478872  xchg     edi, eax
+0x00478873  test     cl, dl
+0x00478875  cmp      ah, byte ptr [esi - 0x44188973]
 0x0047887b  xchg     edi, eax
 0x0047887c  cmp      ebp, dword ptr [edi]
 0x0047887e  mov      dword ptr [eax + 0x79], eax
@@ -10840,6 +12810,7 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x004788b4  cli      
 0x004788b5  or       esi, dword ptr [edi - 0x531bfdba]
 0x004788b6  mov      bh, 0x46
+0x004788b7  inc      esi
 0x004788b8  add      ah, ah
 0x004788ba  lodsb    al, byte ptr [esi]
 0x004788bb  jae      0x478846
@@ -10984,10 +12955,48 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00478da6  or       eax, 0xfc944094
 0x00478dab  inc      esp
 0x00478dac  jmp      0xf0a6b9f2
+0x00478e71  xor      byte ptr [ebx - 0x64], 0xe9
+0x00478e75  pushal   
+0x00478e76  mov      esp, 0xf2e79953
+0x00478e7b  pushal   
+0x00478e7c  add      eax, 0x64e511cc
+0x00478e81  stosb    byte ptr es:[edi], al
+0x00478e82  bound    esi, qword ptr [edx - 0x3a]
+0x00478e85  mov      al, byte ptr [0x81e79192]
+0x00478e8a  mov      dl, 0x78
+0x00478e8b  js       0x478ee1
+0x00478e8c  push     esp
+0x00478e8d  xchg     esi, eax
+0x00478ec2  pushal   
+0x00478ec3  cmp      dword ptr [edi - 0x7e3cf08f], 0xe13239cb
+0x00478ec6  movnti   dword ptr [ecx - 0x1ecdc635], eax
+0x00478ec8  or       ebx, 0xe3e13239
+0x00478eca  cmp      dword ptr [edx], esi
+0x00478ecb  xor      ah, cl
+0x00478ecc  loope    0x478eb1
+0x00478ecd  jecxz    0x478e71
+0x00478ece  mov      byte ptr [0x633a0b86], al
+0x00478ecf  xchg     byte ptr [ebx], cl
+0x00478ed0  or       edi, dword ptr [edx]
+0x00478ed1  cmp      ah, byte ptr [ebx + 0x63]
+0x00478ed2  arpl     word ptr [ebx - 0x56], sp
+0x00478ed3  arpl     word ptr [edx - 0x4c879c23], bp
+0x00478ed4  stosb    byte ptr es:[edi], al
+0x00478ed5  frstor   dword ptr [ebx + 0x78]
+0x00478ed6  arpl     word ptr [eax - 0x4d], di
+0x00478ed7  js       0x478e8c
+0x00478ed8  mov      bl, 0xd4
+0x00478ed9  aam      0x37
+0x00478eda  aaa      
+0x00478edb  sub      al, 0xe9
 0x00478edc  jmp      0x47868e
+0x00478edd  lodsd    eax, dword ptr [esi]
+0x00478ede  idiv     edi
+0x00478ee0  inc      dword ptr [edi + 0x669c2404]
 0x00478ee1  xchg     dword ptr [esp], eax
 0x00478ee4  pushfd   
 0x00478ee5  movsx    ax, dl
+0x00478ee6  movsx    eax, dl
 0x00478ee9  lea      eax, [ebp*8 + 0x4096b3a5]
 0x00478ef0  mov      eax, dword ptr [0x45c28c]
 0x00478ef5  pushfd   
@@ -11322,8 +13331,75 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00479338  lodsd    eax, dword ptr [esi]
 0x00479339  mov      ecx, 0xde3ea5fe
 0x0047934b  ret      0x5d0c
+0x00479390  mov      ecx, 0x1c16f194
+0x00479393  push     ss
+0x00479394  sbb      al, 0x79
+0x00479395  jns      0x4793d5
+0x00479396  mov      byte ptr ds:[0x3f4aa18a], al
+0x00479397  mov      byte ptr [0x3f4aa18a], al
+0x00479398  mov      byte ptr [0x3f4aa18a], al
+0x00479399  mov      ah, byte ptr [ecx - 0x6ab9c0b6]
+0x0047939a  mov      eax, dword ptr [0x95463f4a]
+0x0047939b  dec      edx
+0x0047939c  aas      
+0x0047939d  inc      esi
+0x0047939e  xchg     ebp, eax
+0x0047939f  fiadd    word ptr [esi - 0x70f32fa5]
+0x004793a0  xchg     byte ptr [ebx - 0x30], bl
+0x004793a1  pop      ebx
+0x004793a2  ror      byte ptr [edi + ecx*4], 1
+0x004793a3  or       al, 0x8f
+0x004793a5  in       eax, dx
+0x004793a6  dec      edi
+0x004793a7  mov      cl, 0x6c
+0x004793a8  insb     byte ptr es:[edi], dx
+0x004793a9  jb       0x479428
+0x004793aa  jge      0x4793d4
+0x004793ab  sub      byte ptr [ebx + 0x44bc0209], bh
+0x004793ac  mov      ebx, 0x44bc0209
+0x004793ad  or       dword ptr [edx], eax
+0x004793ae  add      bh, byte ptr [esp + eax*2 + 0x39bd832]
+0x004793af  mov      esp, 0x9bd83244
+0x004793b0  inc      esp
+0x004793b1  xor      bl, al
+0x004793b2  fcomp    dword ptr [ebx - 0x75bb38fd]
+0x004793b3  wait     
+0x004793b4  add      eax, edi
+0x004793b5  mov      dword ptr [edx + ecx*4 - 0x69], 0x649059dd
+0x004793b6  inc      esp
+0x004793b7  mov      dl, byte ptr [edi + 0x649059dd]
+0x004793b8  xchg     edi, eax
+0x004793b9  fstp     qword ptr [ecx - 0x70]
+0x004793ba  pop      ecx
+0x004793bb  nop      
+0x004793bc  sbb      al, ah
+0x004793bd  sbb      al, ah
+0x004793be  les      edi, ptr [ecx + ebx*4]
+0x004793bf  cmp      al, 0x99
+0x004793c0  cdq      
+0x004793c1  add      ebx, 0xc9d7a3c4
+0x004793c3  les      esp, ptr [ebx + 0x1769c9d7]
+0x004793c4  mov      dword ptr [0x1769c9d7], eax
+0x004793c5  xlatb    
+0x004793c6  leave    
+0x004793c7  imul     edx, dword ptr [edi], 0xbd4e4dc1
+0x004793c8  pop      ss
+0x004793c9  ror      dword ptr [ebp + 0x4e], 0xbd
+0x004793ca  dec      ebp
+0x004793cb  dec      esi
+0x004793cc  mov      ebp, 0x8336e19b
+0x004793cd  wait     
+0x004793ce  loope    0x479406
+0x004793cf  add      dword ptr ss:[esi - 0x72ddd55e], 0x64
+0x004793d0  add      dword ptr [esi - 0x72ddd55e], 0x64
+0x004793d1  xchg     byte ptr [edx + 0x648d222a], ah
+0x004793d2  mov      byte ptr [0x648d222a], al
+0x004793d3  sub      ah, byte ptr [edx]
+0x004793d4  and      cl, byte ptr [ebp - 0x17fbdb9c]
 0x004793d5  lea      esp, [esp + 4]
+0x004793d7  and      al, 4
 0x004793d9  call     0x475cea
+0x004793da  or       al, 0xc9
 0x004793de  call     0x474968
 0x004793e3  call     0x47a950
 0x004793e8  pushfd   
@@ -11347,8 +13423,14 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00479421  mov      byte ptr [esp], 0x67
 0x00479425  pushfd   
 0x00479426  mov      dword ptr [esp + 4], 0x1568fb6c
+0x00479428  and      al, 4
+0x0047942a  insb     byte ptr es:[edi], dx
+0x0047942b  sti      
+0x0047942c  push     0x2474ff15
 0x0047942e  push     dword ptr [esp + 0xc]
+0x00479431  or       al, 0xc2
 0x00479432  ret      0x10
+0x00479433  adc      byte ptr [eax], al
 0x00479435  call     0x47aeb1
 0x0047943a  mov      eax, dword ptr [0x45c614]
 0x0047943f  push     dword ptr [esp + 4]
@@ -12057,9 +14139,16 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00479db7  pushfd   
 0x00479db8  push     dword ptr [esp + 0xc]
 0x00479dbc  ret      0x10
+0x00479dbf  call     0x476a5e
+0x00479dc0  lcall    0x2464, 0x8dffffcc
+0x00479dc3  dec      dword ptr [ebp - 0x17b7db9c]
 0x00479dc4  lea      esp, [esp + 0x48]
+0x00479dc7  dec      eax
 0x00479dc8  call     0x475cea
+0x00479dc9  sbb      eax, 0xe9ffffbf
 0x00479dcd  jmp      0x47b67a
+0x00479dce  test     al, 0x18
+0x00479dd0  add      byte ptr [eax], al
 0x00479dd2  mov      byte ptr [esp], 0x37
 0x00479dd6  call     0x47b5ee
 0x00479ddb  lea      esp, [esp + 0x24]
@@ -12102,9 +14191,16 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x00479e51  lea      esp, [esp + 0x30]
 0x00479e55  call     0x475cea
 0x00479e5a  jmp      0x475cf4
+0x00479e5f  jmp      0x475df1
+0x00479e60  lea      edi, [edi - 0x399f0001]
+0x00479e61  mov      edi, 0xc660ffff
 0x00479e64  pushal   
 0x00479e65  mov      byte ptr [esp], 0x78
+0x00479e66  add      al, 0x24
+0x00479e68  js       0x479df3
 0x00479e69  mov      dword ptr [esp + 0x20], eax
+0x00479e6a  inc      esp
+0x00479e6b  and      al, 0x20
 0x00479e6d  jmp      0x471896
 0x00479e72  lea      esp, [esp + 0x1c]
 0x00479e76  call     0x475cea
@@ -12958,6 +15054,13 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047a9ae  pushfd   
 0x0047a9af  push     dword ptr [esp + 0x30]
 0x0047a9b3  ret      0x34
+0x0047a9b6  pushal   
+0x0047a9b7  pushfd   
+0x0047a9b8  pop      dword ptr [esp + 0x1c]
+0x0047a9b9  inc      esp
+0x0047a9ba  and      al, 0x1c
+0x0047a9bc  call     0x47aab9
+0x0047a9bf  add      byte ptr [eax], al
 0x0047a9c1  jmp      0x47093e
 0x0047a9c6  pushal   
 0x0047a9c7  mov      byte ptr [esp + 8], 0xb9
@@ -13425,20 +15528,56 @@ image base 0x400000; text0 0x46e000-0x47c000; text1 0x47c000-0x4c7000; 指令数
 0x0047afeb  pushfd   
 0x0047afec  push     dword ptr [esp + 0x10]
 0x0047aff0  ret      0x14
+0x0047aff3  xor      ebx, 0x8489faa9
+0x0047aff4  test     eax, 0xf58489fa
+0x0047aff5  test     eax, 0xf58489fa
+0x0047aff8  test     ch, dh
+0x0047aff9  cmc      
+0x0047affa  cmp      ah, 0x32
+0x0047affd  xor      edi, 0xc3434920
 0x0047b000  dec      ecx
 0x0047b001  inc      ebx
 0x0047b002  ret      
+0x0047b003  bt       dx, ax
+0x0047b004  bt       edx, eax
+0x0047b005  mov      dword ptr [0x2474ffc2], eax
+0x0047b007  push     dword ptr [esp + 0x2c]
+0x0047b008  je       0x47b02e
+0x0047b009  and      al, 0x2c
+0x0047b00a  sub      al, 0x9d
+0x0047b00b  popfd    
+0x0047b00c  mov      word ptr [esp], 0x68b0
+0x0047b00d  mov      dword ptr [esp], 0xff9c68b0
+0x0047b00e  add      al, 0x24
+0x0047b00f  and      al, 0xb0
+0x0047b010  mov      al, 0x68
+0x0047b011  push     0x2474ff9c
+0x0047b012  pushfd   
+0x0047b013  push     dword ptr [esp + 0x34]
+0x0047b014  je       0x47b03a
+0x0047b015  and      al, 0x34
+0x0047b016  xor      al, 0xc2
+0x0047b017  ret      0x38
+0x0047b018  cmp      byte ptr [eax], al
+0x0047b019  add      byte ptr [ecx + 0x66], dl
 0x0047b01a  push     ecx
 0x0047b01b  mov      word ptr [esp], 0x1cda
+0x0047b01c  mov      dword ptr [esp], 0x4871cda
 0x0047b021  xchg     dword ptr [esp], eax
+0x0047b023  and      al, 0x66
 0x0047b024  movzx    ax, dl
+0x0047b025  movzx    eax, dl
 0x0047b028  movzx    ax, al
 0x0047b02c  mov      eax, dword ptr [0x45c820]
+0x0047b02e  enter    0x45, -0x64
 0x0047b031  pushfd   
 0x0047b032  push     0xe042224b
 0x0047b037  pushal   
 0x0047b038  push     0x47d848a9
+0x0047b03a  dec      eax
+0x0047b03b  fadd     dword ptr [edi - 0x73]
 0x0047b03d  lea      esp, [esp + 0x2c]
+0x0047b03e  and      al, 0x2c
 0x0047b041  call     0x475cea
 0x0047b046  pushal   
 0x0047b047  jmp      0x47299e
