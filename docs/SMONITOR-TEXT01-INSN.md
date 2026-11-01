@@ -197,3 +197,14 @@ text1 的 150 个 rizin 函数也批量 pdg 出 141 个（analysis/SMONITOR-TEXT
 - 完整清单已更新：analysis/SMONITOR-TEXT01-INSN-FULL.txt（21705 行）。
 
 产物：analysis/tmp/text01_entryscan.py、analysis/tmp/text01_final_union.py、analysis/tmp/text01_union_final.json。
+## RVA 指针入口扩展（第 8 轮补充）
+
+- 发现原有清单遗漏大量以 RVA 形式存储的指针：扫描全镜像 4 字节值，若 v + 0x400000 落在 text0/text1 范围，则视为候选入口（864 个）；
+- 绝对立即数候选 194 个，两者合并作为入口，再从 CODE 直接引用与已知 handler 入口出发递归遍历；
+- 效果：text0 字节覆盖 61.79% → 63.96%（绝对立即数）→ 76.93%（RVA 指针）→ 78.02%（两者合并）；与 rizin 函数线性解码取并集后 78.55%；
+- text1 覆盖从 8.03% 提升到 20.19%，但 text1 是数据载荷，其中大部分新增地址属于随机数据被误判为指令，仅供参考；
+- 并集指令数 41314，完整清单已更新：analysis/SMONITOR-TEXT01-INSN-FULL.txt（41318 行）。
+
+抽样检查新增地址：text0 侧可见合理指令（如 call/jecxz），text1 侧多为 out/fimul 等不可能出现在正常代码中的指令，印证 text1 误判。
+
+产物：analysis/tmp/text01_rva_scan.py、analysis/tmp/text01_union_v2.py、analysis/tmp/text01_union_v2.json。
