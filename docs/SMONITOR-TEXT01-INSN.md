@@ -189,3 +189,11 @@ text1 的 150 个 rizin 函数也批量 pdg 出 141 个（analysis/SMONITOR-TEXT
 - 结合 7.95 的高熵与 0.2% 的指针表，判定为 rizin 在数据上误判出的“伪函数”，pdg 输出不可作为真实代码使用。
 
 因此：text0 的指令级清单与反编译已完成（1205 个函数），text1 仍按数据/编码负载处理。
+## 立即数入口扩展（第 7 轮补充）
+
+- 在全镜像中扫描 4 字节值落在 text0/text1 范围的立即数（194 个候选），作为遍历入口重跑；
+- 单独效果：text0 从 61.79% 提升到 63.96%，text1 从 0.08% 提升到 7.51%（text1 部分多为数据误判）；
+- 与 rizin 函数线性解码取并集后：指令 21702 条，text0 字节覆盖 68.06%，text1 字节覆盖 8.03%；
+- 完整清单已更新：analysis/SMONITOR-TEXT01-INSN-FULL.txt（21705 行）。
+
+产物：analysis/tmp/text01_entryscan.py、analysis/tmp/text01_final_union.py、analysis/tmp/text01_union_final.json。
