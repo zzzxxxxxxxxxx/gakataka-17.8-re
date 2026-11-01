@@ -208,3 +208,23 @@ text1 的 150 个 rizin 函数也批量 pdg 出 141 个（analysis/SMONITOR-TEXT
 抽样检查新增地址：text0 侧可见合理指令（如 call/jecxz），text1 侧多为 out/fimul 等不可能出现在正常代码中的指令，印证 text1 误判。
 
 产物：analysis/tmp/text01_rva_scan.py、analysis/tmp/text01_union_v2.py、analysis/tmp/text01_union_v2.json。
+## 编码指针扫描与可信过滤（第 9 轮补充）
+
+测试多种指针编码作为入口（v 为镜像里的 4 字节值）：
+
+| 变换 | 候选数 | text0 覆盖 | text1 覆盖 | 判定 |
+|---|---|---|---|---|
+| 无（直接地址） | 194 | 63.96% | 7.51% | 采用 |
+| v + BASE（RVA） | 864 | 76.93% | 18.22% | 采用 |
+| v - BASE | 205 | 63.45% | 8.84% | 采用 |
+| v ^ 0x40000000 | 64 | 63.11% | 4.70% | 采用 |
+| (v & 0xFFFFFF) + BASE | 10541 | 100.88% | 81.76% | 弃用：覆盖率超 100% 说明重叠解码，属大规模误判 |
+
+采用“候选起点不得落在已知指令中间”的过滤：先由 CODE 引用 + 已知 handler + rizin 函数建立可信指令集，
+落在这些指令内部的候选直接丢弃，剩余 1117 个候选。最终：
+
+- 指令 45761 条，text0 字节覆盖 79.12%，text1 23.29%；
+- text1 的新增覆盖仍以数据误判为主，不建议作为代码使用；
+- 清单已更新：analysis/SMONITOR-TEXT01-INSN-FULL.txt（45764 行）。
+
+产物：analysis/tmp/text01_enc_scan.py、analysis/tmp/text01_union_v3.py、analysis/tmp/text01_union_v3.json。
