@@ -30,3 +30,11 @@ analysis/tmp/pdg_status.json 与 analysis/tmp/pdg_aaa_status.json，原始输出
 - text0 字节覆盖 66.26%（并集）；
 - pdg 输出普遍带 unaff_* 与栈帧警告，源于 pushal/pushfd/ret imm 跳板；
 - 未覆盖的 text0 字节无函数入口，按数据/VM 载荷处理。
+## 候选起点扩展（第 3 轮补充）
+
+- 从 text0 已解码但不在 rizin 函数表中的地址里，按间隔 >=0x80 取候选函数起点 384 个；
+- 批量 `s addr; af; pdg`：318 个成功成为独立函数并产出 C 代码，49 个被解析为包含函数，17 个失败；
+- 输出：analysis/SMONITOR-TEXT0-CAND-FUNCS.txt（724 KB，318 个新函数）；
+- 加上此前 rizin 表的 1205 个函数，text0 函数级反编译累计约 1523 个入口。
+
+备注：候选起点来自静态遍历结果，函数边界由 rizin af 估计，未逐一验证语义。
